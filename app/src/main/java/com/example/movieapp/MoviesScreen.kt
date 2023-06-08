@@ -12,13 +12,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,7 +25,7 @@ import com.example.movieapp.viewmodel.MovieViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+//    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     LaunchedEffect(key1 = "", block = {
         viewModel.getPopularMovies(1)
         viewModel.getNowPlayingMovies(1)
@@ -51,11 +48,9 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
                         fontWeight = FontWeight.Bold
                     )
                 },
-                scrollBehavior = scrollBehavior
             )
         },
-        contentWindowInsets = WindowInsets(0.dp),
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        contentWindowInsets = WindowInsets(0.dp)
     ) { paddingValues ->
         Surface(modifier = Modifier.padding(paddingValues = paddingValues), color = Color.White) {
             val contentPadding = WindowInsets.navigationBars.add(

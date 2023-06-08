@@ -33,7 +33,6 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
                 .catch { exception ->
 
                 }.collect { movies ->
-                    delay(3000)
                     popularMoviesResponse.value = DataHandler.Success(movies)
                     Log.e("movies", Gson().toJson(movies))
                 }
@@ -75,4 +74,6 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
                 }
         }
     }
+
+    fun getAllMovies() = movieRepository.getAllMovies()
 }

@@ -32,7 +32,12 @@ fun NavigationGraph(navController: NavHostController) {
         composable(NavigationRoute.MOVIES_VIEW_ALL.route) {
             val result =
                 navController.previousBackStackEntry?.savedStateHandle?.get<String>("title")
-            result?.let { title -> MovieViewAllScreen(title, navController) }
+            result?.let { title ->
+                MovieViewAllScreen(
+                    title = title,
+                    navHostController = navController
+                )
+            }
         }
     }
 
