@@ -58,7 +58,7 @@ fun AllMoviesListItem(item: MovieItem, onItemClick: (movieId: Int?) -> Unit) {
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
                 modifier = Modifier.padding(top = 10.dp),
-                color = Color.Black,
+                color = Color.White,
                 textAlign = TextAlign.Start
             )
         }
@@ -77,7 +77,7 @@ fun AllMoviesListItem(item: MovieItem, onItemClick: (movieId: Int?) -> Unit) {
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(start = 2.dp),
-                    color = Color.Black,
+                    color = Color.White,
                     textAlign = TextAlign.Start
                 )
             }

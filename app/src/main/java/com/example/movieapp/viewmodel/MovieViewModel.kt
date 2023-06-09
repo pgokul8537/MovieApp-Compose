@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.movieapp.DataHandler
+import com.example.movieapp.network.model.MovieDetailsResponse
 import com.example.movieapp.network.model.MovieResponse
 import com.example.movieapp.repository.MovieRepository
 import com.google.gson.Gson
@@ -25,6 +26,8 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
     var upcomingMoviesResponse: MutableState<DataHandler<MovieResponse>> =
         mutableStateOf(DataHandler.Loading)
     var topRatedMoviesResponse: MutableState<DataHandler<MovieResponse>> =
+        mutableStateOf(DataHandler.Loading)
+    var moviesDetailsResponse: MutableState<DataHandler<MovieDetailsResponse>> =
         mutableStateOf(DataHandler.Loading)
 
     fun getPopularMovies(pageNo: Int) {
@@ -75,5 +78,17 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
         }
     }
 
-    fun getAllMovies() = movieRepository.getAllMovies().cachedIn(viewModelScope)
+    fun getMovieDetails(movieId: Int) {
+        viewModelScope.launch {
+            movieRepository.getMoviesDetails(movieId.toString())
+                .catch { exception ->
+
+                }.collect { movies ->
+                    moviesDetailsResponse.value = DataHandler.Success(movies)
+                    Log.e("movies", Gson().toJson(movies))
+                }
+        }
+    }
+
+    fun getAllMovies(url: String) = movieRepository.getAllMovies(url).cachedIn(viewModelScope)
 }

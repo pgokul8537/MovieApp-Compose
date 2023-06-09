@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.movieapp.ui.components.BottomNavigation
 import com.example.movieapp.NavigationGraph
+import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-//            MovieAppTheme {
+            MovieAppTheme {
             val navController = rememberNavController()
             Scaffold(
                 bottomBar = { BottomNavigation(navController = navController) },
@@ -32,7 +33,7 @@ class MainActivity : ComponentActivity() {
                         NavigationGraph(navController = navController)
                     }
                 })
-//            }
+            }
         }
     }
 }

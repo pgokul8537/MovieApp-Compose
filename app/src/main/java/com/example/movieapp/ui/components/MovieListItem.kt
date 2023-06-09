@@ -61,7 +61,7 @@ fun MovieListItem(item: MovieItem, onItemClick: (movieId: Int?) -> Unit) {
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(top = 10.dp),
-                color = Color.Black,
+                color = Color.White,
                 textAlign = TextAlign.Start
             )
         }
@@ -80,7 +80,7 @@ fun MovieListItem(item: MovieItem, onItemClick: (movieId: Int?) -> Unit) {
                     fontWeight = FontWeight.Normal,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(start = 2.dp),
-                    color = Color.Black,
+                    color = Color.White,
                     textAlign = TextAlign.Start
                 )
             }
