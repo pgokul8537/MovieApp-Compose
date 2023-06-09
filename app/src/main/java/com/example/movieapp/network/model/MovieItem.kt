@@ -1,6 +1,7 @@
 package com.example.movieapp.network.model
 
 import android.os.Parcelable
+import com.example.movieapp.utils.Constants
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -34,4 +35,17 @@ data class MovieItem(
     val voteAverage: Double?,
     @SerializedName("vote_count")
     val voteCount: Int?
-) : Parcelable
+) : Parcelable {
+    fun getDefaultImagePath(): String? {
+        if (!posterPath.isNullOrEmpty()) {
+            return "${Constants.imageUrl}$posterPath"
+        }
+        return null
+    }
+    fun getOriginalImagePath(): String? {
+        if (!posterPath.isNullOrEmpty()) {
+            return "${Constants.originalImageUrl}$posterPath"
+        }
+        return null
+    }
+}

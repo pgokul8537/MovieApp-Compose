@@ -1,7 +1,8 @@
 package com.example.movieapp.di.network
 
-import com.example.movieapp.BuildConfig
 import com.example.movieapp.network.ApiInterface
+import com.example.movieapp.utils.Constants
+import com.example.movieapp.utils.Constants.access_token
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -39,7 +40,7 @@ object NetworkModule {
             .connectTimeout(60, TimeUnit.SECONDS)
         clientBuilder.addInterceptor {
             val authorizationToken =
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NWY5ZmYzMzhlNGY4MTc2Y2Q1OTM3MDZiODJmNTAxMSIsInN1YiI6IjVkYzk1ZmQ3NDcwZWFkMDAxMzk4N2ZhOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4q29og1uwwWqxFp63WK2W3qM8Wh0ZOq_N_waEmhkh2U"
+                access_token
             val original = it.request()
             var request: Request?
             request = original.newBuilder()
@@ -55,7 +56,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(client: OkHttpClient, gson: Gson): Retrofit {
-        return Retrofit.Builder().client(client).baseUrl(BuildConfig.BASE_URL)
+        return Retrofit.Builder().client(client).baseUrl(Constants.base_url)
             .addConverterFactory(GsonConverterFactory.create(gson)).build()
     }
 

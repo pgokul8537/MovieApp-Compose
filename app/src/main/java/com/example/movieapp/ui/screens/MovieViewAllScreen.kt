@@ -1,4 +1,4 @@
-package com.example.movieapp
+package com.example.movieapp.ui.screens
 
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +29,8 @@ import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.example.movieapp.ui.components.AllMoviesListItem
+import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.viewmodel.MovieViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

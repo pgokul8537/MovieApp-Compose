@@ -5,6 +5,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.movieapp.ui.screens.ExploreScreen
+import com.example.movieapp.ui.screens.MovieDetailsScreen
+import com.example.movieapp.ui.screens.MovieViewAllScreen
+import com.example.movieapp.ui.screens.MoviesScreen
+import com.example.movieapp.ui.screens.TvShowsScreen
 import com.example.movieapp.viewmodel.MovieViewModel
 
 @Composable
