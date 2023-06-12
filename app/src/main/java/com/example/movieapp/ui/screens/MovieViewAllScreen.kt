@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -44,9 +45,9 @@ fun MovieViewAllScreen(
     url: String,
     navHostController: NavHostController
 ) {
-    LaunchedEffect(key1 = "", block = {
+    /*LaunchedEffect(key1 = "", block = {
 
-    })
+    })*/
     val pagingItems = viewModel.getAllMovies(url).collectAsLazyPagingItems()
     val isLoading = remember {
         mutableStateOf(true)
@@ -113,6 +114,15 @@ fun MovieViewAllScreen(
                                         navigate(NavigationRoute.MOVIE_DETAILS.route)
                                     }
                                 })
+                            }
+                        }
+                        if (pagingItems.loadState.append == LoadState.Loading) {
+                            item {
+                                MovieProgress(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(100.dp)
+                                )
                             }
                         }
                     }
