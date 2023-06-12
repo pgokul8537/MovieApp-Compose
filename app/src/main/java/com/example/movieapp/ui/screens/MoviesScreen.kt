@@ -1,6 +1,5 @@
 package com.example.movieapp.ui.screens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.add
@@ -9,14 +8,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.movieapp.DataHandler
@@ -26,9 +24,8 @@ import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.MoviesUiItem
 import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.MovieViewModel
-import kotlinx.coroutines.delay
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController) {
     LaunchedEffect(key1 = "", block = {
@@ -41,7 +38,10 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
     val topRatedMoviesResponse = viewModel.topRatedMoviesResponse.value
     val upcomingMoviesResponse = viewModel.upcomingMoviesResponse.value
     val nowPlayingMoviesResponse = viewModel.nowPlayingMoviesResponse.value
-
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(Color.Black)
+    systemUiController.setNavigationBarColor(Color.Black)
+    systemUiController.setSystemBarsColor(Color.Black)
     /*Scaffold(
         contentColor = Color.Black,
         topBar = {
@@ -68,24 +68,6 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
         ).asPaddingValues()
         LazyColumn(contentPadding = contentPadding, content = {
             item {
-                /*MoviesUiItem(
-                    popularMoviesResponse,
-                    "Popular",
-                    itemClick = { movieId ->
-                        navHostController.apply {
-                            currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                            navigate(NavigationRoute.MOVIE_DETAILS.route)
-                        }
-                    },
-                    viewAllItemClick = {
-                        navHostController.apply {
-                            currentBackStackEntry?.savedStateHandle?.apply {
-                                set("title", "Popular Movies")
-                                set("url", Constants.urlPopularMovies)
-                            }
-                            navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                        }
-                    })*/
                 when (popularMoviesResponse) {
                     is DataHandler.Failure -> {
                     }
@@ -105,13 +87,6 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
                         val movieList = popularMoviesResponse.data.results
 
                         movieList?.let {
-                            /*val pageState = rememberPagerState { movieList.size }
-                            LaunchedEffect(key1 = pageState.currentPage) {
-                                delay(3000)
-                                var newPosition = pageState.currentPage + 1
-                                if (newPosition > movieList.size - 1) newPosition = 0
-                                pageState.animateScrollToPage(newPosition)
-                            }*/
                             HorizontalPagerWithImage(movieItem = it)
                         }
                     }
