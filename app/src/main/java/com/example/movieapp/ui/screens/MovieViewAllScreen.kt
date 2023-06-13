@@ -20,7 +20,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -45,9 +44,6 @@ fun MovieViewAllScreen(
     url: String,
     navHostController: NavHostController
 ) {
-    /*LaunchedEffect(key1 = "", block = {
-
-    })*/
     val pagingItems = viewModel.getAllMovies(url).collectAsLazyPagingItems()
     val isLoading = remember {
         mutableStateOf(true)

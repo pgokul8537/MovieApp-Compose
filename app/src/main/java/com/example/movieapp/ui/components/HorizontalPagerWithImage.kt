@@ -1,6 +1,7 @@
 package com.example.movieapp.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +15,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,12 +30,10 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.movieapp.network.model.MovieItem
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HorizontalPagerWithImage(movieItem: List<MovieItem>) {
+fun HorizontalPagerWithImage(movieItem: List<MovieItem>, onItemClick: (movieId: Int?) -> Unit) {
     val pageState = rememberPagerState { movieItem.size }
     val scope = rememberCoroutineScope()
     val isDragged by pageState.interactionSource.collectIsDraggedAsState()
@@ -61,7 +59,10 @@ fun HorizontalPagerWithImage(movieItem: List<MovieItem>) {
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 16.dp, end = 16.dp),
+                    .padding(start = 16.dp, end = 16.dp)
+                    .clickable {
+                        onItemClick.invoke(movie.id)
+                    },
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 AsyncImage(

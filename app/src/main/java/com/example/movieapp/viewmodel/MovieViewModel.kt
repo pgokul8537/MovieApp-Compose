@@ -28,16 +28,18 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
         mutableStateOf(DataHandler.Loading)
     var upcomingMoviesResponse: MutableState<DataHandler<MovieResponse>> =
         mutableStateOf(DataHandler.Loading)
-    var trendingMoviesResponse: MutableState<DataHandler<MovieResponse>> =
-        mutableStateOf(DataHandler.Loading)
+
     var topRatedMoviesResponse: MutableState<DataHandler<MovieResponse>> =
         mutableStateOf(DataHandler.Loading)
     var similarMoviesResponse: MutableState<DataHandler<MovieResponse>> =
         mutableStateOf(DataHandler.Loading)
-    var moviesDetailsResponse: MutableState<DataHandler<MovieDetailsResponse>> =
-        mutableStateOf(DataHandler.Loading)
-    /*var movieImagesResponse: MutableState<DataHandler<MovieImagesResponse>> =
-        mutableStateOf(DataHandler.Loading)*/
+    private val _trendingMoviesResponse =
+        MutableStateFlow<DataHandler<MovieResponse>>(DataHandler.Loading)
+    val trendingMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _trendingMoviesResponse
+
+    private val _moviesDetailsResponse =
+        MutableStateFlow<DataHandler<MovieDetailsResponse>>(DataHandler.Loading)
+    val moviesDetailsResponse: StateFlow<DataHandler<MovieDetailsResponse>> = _moviesDetailsResponse
 
     private val _movieImagesResponse =
         MutableStateFlow<DataHandler<MovieImagesResponse>>(DataHandler.Loading)
@@ -85,7 +87,7 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
                 .catch { exception ->
 
                 }.collect { movies ->
-                    trendingMoviesResponse.value = DataHandler.Success(movies)
+                    _trendingMoviesResponse.value = DataHandler.Success(movies)
                     Log.e("movies", Gson().toJson(movies))
                 }
         }
@@ -109,7 +111,7 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
                 .catch { exception ->
 
                 }.collect { movies ->
-                    moviesDetailsResponse.value = DataHandler.Success(movies)
+                    _moviesDetailsResponse.value = DataHandler.Success(movies)
                     Log.e("movies", Gson().toJson(movies))
                 }
         }

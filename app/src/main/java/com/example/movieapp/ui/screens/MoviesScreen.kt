@@ -12,9 +12,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.movieapp.DataHandler
@@ -24,7 +24,6 @@ import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.MoviesUiItem
 import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.MovieViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController) {
@@ -33,32 +32,14 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
         viewModel.getNowPlayingMovies(1)
         viewModel.getTopRatedMovies(1)
         viewModel.getUpcomingMovies(1)
+        viewModel.getTrendingMovies()
+
     })
     val popularMoviesResponse = viewModel.popularMoviesResponse.value
     val topRatedMoviesResponse = viewModel.topRatedMoviesResponse.value
     val upcomingMoviesResponse = viewModel.upcomingMoviesResponse.value
     val nowPlayingMoviesResponse = viewModel.nowPlayingMoviesResponse.value
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setStatusBarColor(Color.Black)
-    systemUiController.setNavigationBarColor(Color.Black)
-    systemUiController.setSystemBarsColor(Color.Black)
-    /*Scaffold(
-        contentColor = Color.Black,
-        topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(Color.Black),
-                title = {
-                    Text(
-                        text = "Movie",
-                        color = Color.Red,
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                },
-            )
-        },
-        contentWindowInsets = WindowInsets(0.dp)
-    ) { paddingValues ->*/
+    val trendingMoviesResponse = viewModel.trendingMoviesResponse.collectAsState()
     Surface {
         val contentPadding = WindowInsets.navigationBars.add(
             WindowInsets(
@@ -68,29 +49,41 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
         ).asPaddingValues()
         LazyColumn(contentPadding = contentPadding, content = {
             item {
-                when (popularMoviesResponse) {
-                    is DataHandler.Failure -> {
-                    }
-
-                    DataHandler.Loading -> {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(5.dp)
-                        ) {
-                            MovieProgress()
+                trendingMoviesResponse.value.let {
+                    when (it) {
+                        is DataHandler.Failure -> {
                         }
-                    }
 
-                    is DataHandler.Success -> {
-                        val movieList = popularMoviesResponse.data.results
+                        DataHandler.Loading -> {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(5.dp)
+                            ) {
+                                MovieProgress()
+                            }
+                        }
 
-                        movieList?.let {
-                            HorizontalPagerWithImage(movieItem = it)
+                        is DataHandler.Success -> {
+                            val movieList = it.data.results
+                            movieList?.let { list ->
+                                HorizontalPagerWithImage(
+                                    movieItem = list,
+                                    onItemClick = { movieId ->
+                                        navHostController.apply {
+                                            currentBackStackEntry?.savedStateHandle?.set(
+                                                "movie_id",
+                                                movieId
+                                            )
+                                            navigate(NavigationRoute.MOVIE_DETAILS.route)
+                                        }
+                                    })
+                            }
                         }
                     }
                 }
+
             }
             item {
                 MoviesUiItem(upcomingMoviesResponse, "Upcoming",
@@ -105,6 +98,24 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
                             currentBackStackEntry?.savedStateHandle?.apply {
                                 set("title", "Upcoming Movies")
                                 set("url", Constants.urlUpcomingMovies)
+                            }
+                            navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
+                        }
+                    })
+            }
+            item {
+                MoviesUiItem(upcomingMoviesResponse, "Popular",
+                    itemClick = { movieId ->
+                        navHostController.apply {
+                            currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
+                            navigate(NavigationRoute.MOVIE_DETAILS.route)
+                        }
+                    },
+                    viewAllItemClick = {
+                        navHostController.apply {
+                            currentBackStackEntry?.savedStateHandle?.apply {
+                                set("title", "Popular Movies")
+                                set("url", Constants.urlPopularMovies)
                             }
                             navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
                         }
@@ -149,7 +160,6 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
             }
         })
     }
-//    }
 }
 
 @Composable

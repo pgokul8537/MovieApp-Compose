@@ -13,6 +13,6 @@ object Constants {
     var URL_MOVIE_DETAILS: String = "movie/%1\$s"
     var URL_SIMILAR_MOVIES: String = "movie/%1\$s/similar"
     var URL_MOVIE_IMAGES: String = "movie/%1\$s/images"
-    const val URL_TRENDING_MOVIES: String = "trending/movie/week"
+    const val URL_TRENDING_MOVIES: String = "trending/movie/day"
 
 }
