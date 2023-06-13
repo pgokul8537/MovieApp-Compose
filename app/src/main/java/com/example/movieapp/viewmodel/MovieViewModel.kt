@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.movieapp.DataHandler
+import com.example.movieapp.network.model.CreditResponse
 import com.example.movieapp.network.model.MovieDetailsResponse
 import com.example.movieapp.network.model.MovieImagesResponse
 import com.example.movieapp.network.model.MovieResponse
@@ -44,6 +45,9 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
     private val _movieImagesResponse =
         MutableStateFlow<DataHandler<MovieImagesResponse>>(DataHandler.Loading)
     val movieImagesResponse: StateFlow<DataHandler<MovieImagesResponse>> = _movieImagesResponse
+    private val _creditResponse =
+        MutableStateFlow<DataHandler<CreditResponse>>(DataHandler.Loading)
+    val creditResponse: StateFlow<DataHandler<CreditResponse>> = _creditResponse
 
     fun getPopularMovies(pageNo: Int) {
         viewModelScope.launch {
@@ -124,6 +128,18 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     _movieImagesResponse.value = DataHandler.Success(movies)
+                    Log.e("movies", Gson().toJson(movies))
+                }
+        }
+    }
+
+    fun getMovieCredits(movieId: Int) {
+        viewModelScope.launch {
+            movieRepository.getMovieCredits(movieId.toString())
+                .catch { exception ->
+
+                }.collect { movies ->
+                    _creditResponse.value = DataHandler.Success(movies)
                     Log.e("movies", Gson().toJson(movies))
                 }
         }

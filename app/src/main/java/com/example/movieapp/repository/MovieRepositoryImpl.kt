@@ -11,16 +11,16 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(val apiInterface: ApiInterface) : MovieRepository {
 
     override fun getPopularMovies(pageNo: Int) =
-        flow { emit(apiInterface.getMovies(Constants.urlPopularMovies, pageNo = pageNo)) }
+        flow { emit(apiInterface.getMovies(Constants.URL_POPULAR_MOVIES, pageNo = pageNo)) }
 
     override fun getTopRatedMovies(pageNo: Int) =
-        flow { emit(apiInterface.getMovies(Constants.urlTopRatedMovies, pageNo = pageNo)) }
+        flow { emit(apiInterface.getMovies(Constants.URL_TOP_RATED_MOVIES, pageNo = pageNo)) }
 
     override fun getNowPlayingMovies(pageNo: Int) =
-        flow { emit(apiInterface.getMovies(Constants.urlNowPlayingMovies, pageNo = pageNo)) }
+        flow { emit(apiInterface.getMovies(Constants.URL_NOW_PLAYING_MOVIES, pageNo = pageNo)) }
 
     override fun getUpcomingMovies(pageNo: Int) =
-        flow { emit(apiInterface.getMovies(Constants.urlUpcomingMovies, pageNo = pageNo)) }
+        flow { emit(apiInterface.getMovies(Constants.URL_UPCOMING_MOVIES, pageNo = pageNo)) }
 
     override fun getAllMovies(url: String) =
         Pager(
@@ -38,5 +38,8 @@ class MovieRepositoryImpl @Inject constructor(val apiInterface: ApiInterface) : 
 
     override fun getSimilarMovies(movieId: String) =
         flow { emit(apiInterface.getMovies(format(Constants.URL_SIMILAR_MOVIES, movieId), 1)) }
+
+    override fun getMovieCredits(movieId: String) =
+        flow { emit(apiInterface.getMovieCredits(format(Constants.URL_CREDITS_MOVIES, movieId))) }
 
 }

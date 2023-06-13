@@ -1,5 +1,6 @@
 package com.example.movieapp.network
 
+import com.example.movieapp.network.model.CreditResponse
 import com.example.movieapp.network.model.MovieDetailsResponse
 import com.example.movieapp.network.model.MovieImagesResponse
 import com.example.movieapp.network.model.MovieResponse
@@ -22,4 +23,7 @@ interface ApiInterface {
 
     @GET(Constants.URL_TRENDING_MOVIES)
     suspend fun getTrendingMovies(): MovieResponse
+
+    @GET
+    suspend fun getMovieCredits(@Url url: String): CreditResponse
 }

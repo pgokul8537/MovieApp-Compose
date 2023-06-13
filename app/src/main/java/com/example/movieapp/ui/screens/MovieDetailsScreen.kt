@@ -1,8 +1,11 @@
 package com.example.movieapp.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,25 +35,29 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.movieapp.DataHandler
+import com.example.movieapp.NavigationRoute
 import com.example.movieapp.ui.components.CreditsUIItem
 import com.example.movieapp.ui.components.MovieDetailsTopItem
 import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.MoviesUiItem
+import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.MovieViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun MovieDetailsScreen(
-    viewModel: MovieViewModel = hiltViewModel(), movieId: Int?, navController: NavHostController
+    viewModel: MovieViewModel = hiltViewModel(), movieId: Int?, navHostController: NavHostController
 ) {
     LaunchedEffect(key1 = "", block = {
         movieId?.let { movieId ->
             viewModel.getMovieDetails(movieId)
             viewModel.getMoviesImages(movieId)
             viewModel.getSimilarMovies(movieId)
+            viewModel.getMovieCredits(movieId)
         }
     })
     val movieDetailsResponse = viewModel.moviesDetailsResponse.collectAsState()
+    val creditResponse = viewModel.creditResponse.collectAsState()
     val similarMoviesResponse = viewModel.similarMoviesResponse.value
 
     /*Scaffold(topBar = {
@@ -107,6 +114,16 @@ fun MovieDetailsScreen(
                                         )
                                     }
                                     Column(modifier = Modifier.padding(16.dp)) {
+                                        FlowRow(maxItemsInEachRow = 3) {
+                                            repeat(10) {
+                                                Box(
+                                                    Modifier
+                                                        .size(50.dp)
+                                                        .padding(2.dp)
+                                                        .background(color = Color.Red)
+                                                )
+                                            }
+                                        }
                                         movieResponse.title?.let { title ->
                                             Text(
                                                 text = "Overview",
@@ -124,20 +141,43 @@ fun MovieDetailsScreen(
                                                 )
                                             }
                                             Spacer(modifier = Modifier.size(10.dp))
-                                            CreditsUIItem(similarMoviesResponse, "Cast",
+                                            CreditsUIItem(creditResponse, "Cast",
                                                 itemClick = { movieId ->
-
-                                                },
-                                                viewAllItemClick = {
-
-                                                })
+                                                    navHostController.apply {
+                                                        currentBackStackEntry?.savedStateHandle?.set(
+                                                            "movie_id",
+                                                            movieId
+                                                        )
+                                                        navigate(NavigationRoute.PERSON_DETAILS.route)
+                                                    }
+                                                }, viewAllItemClick = {
+                                                    navHostController.apply {
+                                                        navigate(NavigationRoute.CREDITS_VIEW_ALL.route)
+                                                    }
+                                                }
+                                            )
                                             Spacer(modifier = Modifier.size(10.dp))
                                             MoviesUiItem(similarMoviesResponse, "Similar Movies",
                                                 itemClick = { movieId ->
-
+                                                    navHostController.apply {
+                                                        currentBackStackEntry?.savedStateHandle?.set(
+                                                            "movie_id",
+                                                            movieId
+                                                        )
+                                                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                                                    }
                                                 },
                                                 viewAllItemClick = {
-
+                                                    navHostController.apply {
+                                                        currentBackStackEntry?.savedStateHandle?.apply {
+                                                            set("title", "Upcoming Movies")
+                                                            set(
+                                                                "url",
+                                                                Constants.URL_UPCOMING_MOVIES
+                                                            )
+                                                        }
+                                                        navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
+                                                    }
                                                 })
                                             Spacer(modifier = Modifier.size(10.dp))
                                         }

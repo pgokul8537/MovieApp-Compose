@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,11 +26,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movieapp.DataHandler
-import com.example.movieapp.network.model.MovieResponse
+import com.example.movieapp.network.model.CreditResponse
 
 @Composable
 fun CreditsUIItem(
-    popularMoviesResponse: DataHandler<MovieResponse>,
+    creditResponse: State<DataHandler<CreditResponse>>,
     title: String,
     itemClick: (movieId: Int?) -> Unit,
     viewAllItemClick: () -> Unit
@@ -72,48 +73,51 @@ fun CreditsUIItem(
             }
 
         }
+        creditResponse.value.let { result ->
 
-        when (popularMoviesResponse) {
-            is DataHandler.Failure -> {
-            }
-
-            DataHandler.Loading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(5.dp)
-                ) {
-                    MovieProgress()
+            when (result) {
+                is DataHandler.Failure -> {
                 }
-            }
 
-            is DataHandler.Success -> {
-                val contentPadding = WindowInsets.navigationBars.add(
-                    WindowInsets(
-                        left = 16.dp,
-                        right = 16.dp,
-                        top = 16.dp,
-                        bottom = 16.dp
-                    )
-                ).asPaddingValues()
-                if (!popularMoviesResponse.data.results.isNullOrEmpty()) {
-                    LazyRow(
-                        contentPadding = contentPadding,
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        content = {
-                            items(count = popularMoviesResponse.data.results.size) {
-                                val item = popularMoviesResponse.data.results[it]
-                                if (item != null) {
-                                    MovieListItem(item, onItemClick = { movieId ->
-                                        itemClick.invoke(movieId)
-                                    })
+                DataHandler.Loading -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp)
+                    ) {
+                        MovieProgress()
+                    }
+                }
+
+                is DataHandler.Success -> {
+                    val contentPadding = WindowInsets.navigationBars.add(
+                        WindowInsets(
+                            left = 16.dp,
+                            right = 16.dp,
+                            top = 16.dp,
+                            bottom = 16.dp
+                        )
+                    ).asPaddingValues()
+                    if (!result.data.cast.isNullOrEmpty()) {
+                        LazyRow(
+                            contentPadding = contentPadding,
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            content = {
+                                items(count = result.data.cast.size) {
+                                    val item = result.data.cast[it]
+                                    if (item != null) {
+                                        CastListItem(item) { movieId ->
+                                            itemClick.invoke(movieId)
+                                        }
+                                    }
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }
+
     }
 }

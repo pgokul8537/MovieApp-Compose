@@ -1,6 +1,7 @@
 package com.example.movieapp.repository
 
 import androidx.paging.PagingData
+import com.example.movieapp.network.model.CreditResponse
 import com.example.movieapp.network.model.MovieDetailsResponse
 import com.example.movieapp.network.model.MovieImagesResponse
 import com.example.movieapp.network.model.MovieItem
@@ -17,4 +18,5 @@ interface MovieRepository {
     fun getMoviesDetails(movieId: String): Flow<MovieDetailsResponse>
     fun getSimilarMovies(movieId: String): Flow<MovieResponse>
     fun getMoviesImages(movieId: String): Flow<MovieImagesResponse>
+    fun getMovieCredits(movieId: String): Flow<CreditResponse>
 }

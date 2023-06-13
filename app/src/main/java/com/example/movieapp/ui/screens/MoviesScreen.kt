@@ -43,7 +43,6 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
     Surface {
         val contentPadding = WindowInsets.navigationBars.add(
             WindowInsets(
-                top = 16.dp,
                 bottom = 16.dp
             )
         ).asPaddingValues()
@@ -97,7 +96,7 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
                         navHostController.apply {
                             currentBackStackEntry?.savedStateHandle?.apply {
                                 set("title", "Upcoming Movies")
-                                set("url", Constants.urlUpcomingMovies)
+                                set("url", Constants.URL_UPCOMING_MOVIES)
                             }
                             navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
                         }
@@ -115,7 +114,7 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
                         navHostController.apply {
                             currentBackStackEntry?.savedStateHandle?.apply {
                                 set("title", "Popular Movies")
-                                set("url", Constants.urlPopularMovies)
+                                set("url", Constants.URL_POPULAR_MOVIES)
                             }
                             navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
                         }
@@ -133,7 +132,7 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
                         navHostController.apply {
                             currentBackStackEntry?.savedStateHandle?.apply {
                                 set("title", "Top Rated Movies")
-                                set("url", Constants.urlTopRatedMovies)
+                                set("url", Constants.URL_TOP_RATED_MOVIES)
                             }
                             navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
                         }
@@ -152,7 +151,7 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
                         navHostController.apply {
                             currentBackStackEntry?.savedStateHandle?.apply {
                                 set("title", "Now Playing Movies")
-                                set("url", Constants.urlNowPlayingMovies)
+                                set("url", Constants.URL_NOW_PLAYING_MOVIES)
                             }
                             navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
                         }
