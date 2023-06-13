@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -25,7 +26,7 @@ import coil.compose.AsyncImage
 import com.example.movieapp.network.model.CreditResponse
 
 @Composable
-fun CastListItem(item: CreditResponse.Cast?, onItemClick: (movieId: Int?) -> Unit) {
+fun CastListItem(item: CreditResponse.CreditItem?, onItemClick: (movieId: Int?) -> Unit) {
     Column(
         modifier = Modifier
             .width(150.dp)
@@ -45,51 +46,34 @@ fun CastListItem(item: CreditResponse.Cast?, onItemClick: (movieId: Int?) -> Uni
                 modifier = Modifier.fillMaxSize()
             )
         }
+        if (!item?.name.isNullOrEmpty()) {
+            Text(
+                text = item?.name!!,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth(),
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+        }
         if (!item?.character.isNullOrEmpty()) {
             Text(
-                text = item?.character!!,
+                text = "(${item?.character!!})",
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(top = 10.dp),
-                color = Color.White,
-                textAlign = TextAlign.Start
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth(),
+                color = Color.Gray,
+                textAlign = TextAlign.Center
             )
         }
-        /*if (!item.title.isNullOrEmpty()) {
-            Text(
-                text = item.title,
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(top = 10.dp),
-                color = Color.White,
-                textAlign = TextAlign.Start
-            )
-        }
-        if (item.voteAverage != null && item.voteAverage > 0) {
-            Row(
-                modifier = Modifier.padding(top = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Star,
-                    tint = Color.Red,
-                    contentDescription = "rating"
-                )
-                Text(
-                    text = item.voteAverage.toString(),
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(start = 2.dp),
-                    color = Color.White,
-                    textAlign = TextAlign.Start
-                )
-            }
-
-        }*/
     }
 
 }

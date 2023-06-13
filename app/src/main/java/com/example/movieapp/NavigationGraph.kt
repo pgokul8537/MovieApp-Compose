@@ -3,6 +3,7 @@ package com.example.movieapp
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -77,7 +78,8 @@ fun NavigationGraph(navController: NavHostController) {
         }, popExitTransition = {
             slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
         }) {
-            CreditsViewAllScreen(navHostController = navController)
+            val viewModel = hiltViewModel<MovieViewModel>()
+            CreditsViewAllScreen(viewModel.creditResponse.collectAsState(),navHostController = navController)
         }
         composable(NavigationRoute.PERSON_DETAILS.route, enterTransition = {
             slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))

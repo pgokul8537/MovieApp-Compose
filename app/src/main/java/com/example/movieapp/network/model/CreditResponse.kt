@@ -8,9 +8,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class CreditResponse(
     @SerializedName("cast")
-    val cast: List<Cast?>?,
+    val cast: List<CreditItem>?,
     @SerializedName("crew")
-    val crew: List<Crew?>?,
+    val crew: List<CreditItem>?,
     @SerializedName("id")
     val id: Int?
 ) : Parcelable {
@@ -40,20 +40,7 @@ data class CreditResponse(
         val popularity: Double?,
         @SerializedName("profile_path")
         val profilePath: String?
-    ) : Parcelable{
-        fun getDefaultImagePath(): String? {
-            if (!profilePath.isNullOrEmpty()) {
-                return "${Constants.imageUrl}$profilePath"
-            }
-            return null
-        }
-        fun getOriginalImagePath(): String? {
-            if (!profilePath.isNullOrEmpty()) {
-                return "${Constants.originalImageUrl}$profilePath"
-            }
-            return null
-        }
-    }
+    ) : Parcelable
 
     @Parcelize
     data class Crew(
@@ -80,4 +67,44 @@ data class CreditResponse(
         @SerializedName("profile_path")
         val profilePath: String?
     ) : Parcelable
+
+    @Parcelize
+    data class CreditItem(
+        @SerializedName("adult")
+        val adult: Boolean?,
+        @SerializedName("character")
+        val character: String?,
+        @SerializedName("department")
+        val department: String?,
+        @SerializedName("gender")
+        val gender: Int?,
+        @SerializedName("credit_id")
+        val creditId: String?,
+        @SerializedName("id")
+        val id: Int?,
+        @SerializedName("job")
+        val job: String?,
+        @SerializedName("name")
+        val name: String?,
+        @SerializedName("original_name")
+        val originalName: String?,
+        @SerializedName("popularity")
+        val popularity: Double?,
+        @SerializedName("profile_path")
+        val profilePath: String?
+    ) : Parcelable {
+        fun getDefaultImagePath(): String? {
+            if (!profilePath.isNullOrEmpty()) {
+                return "${Constants.imageUrl}$profilePath"
+            }
+            return null
+        }
+
+        fun getOriginalImagePath(): String? {
+            if (!profilePath.isNullOrEmpty()) {
+                return "${Constants.originalImageUrl}$profilePath"
+            }
+            return null
+        }
+    }
 }
