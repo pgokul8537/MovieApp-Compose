@@ -1,6 +1,5 @@
 package com.example.movieapp.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,16 +20,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -49,6 +42,7 @@ import coil.compose.AsyncImage
 import com.example.movieapp.DataHandler
 import com.example.movieapp.NavigationRoute
 import com.example.movieapp.ui.components.CreditsUIItem
+import com.example.movieapp.ui.components.DetailScreenTopBar
 import com.example.movieapp.ui.components.MovieDetailsTopItem
 import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.MoviesUiItem
@@ -160,14 +154,16 @@ fun MovieDetailsScreen(
                                                     verticalAlignment = Alignment.CenterVertically
                                                 ) {
                                                     TextWithIcon(
+                                                        Modifier.padding(top = 10.dp),
                                                         Icons.Filled.Star,
                                                         Color.Red,
                                                         movieResponse.voteAverage.toString()
                                                     )
                                                     Spacer(modifier = Modifier.size(10.dp))
                                                     TextWithIcon(
+                                                        Modifier.padding(top = 10.dp),
                                                         Icons.Filled.DateRange,
-                                                        Color.White,
+                                                        Color.Red,
                                                         movieResponse.releaseDate.toString()
                                                     )
                                                 }
@@ -262,37 +258,9 @@ fun MovieDetailsScreen(
                 .wrapContentHeight(),
 
             ) {
-            MovieDetailsToolbar(onBackClick = {
+            DetailScreenTopBar(onBackClick = {
                 navHostController.popBackStack()
             })
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun MovieDetailsToolbar(onBackClick: () -> Unit) {
-    val iconModifier = Modifier
-        .size(50.dp)
-        .background(
-            color = Color.LightGray.copy(0.5f),
-            shape = CircleShape
-        )
-    TopAppBar(
-        title = {
-        },
-        colors = TopAppBarDefaults.mediumTopAppBarColors(Color.Transparent.copy(alpha = 0.1f)),
-        navigationIcon = {
-            IconButton(modifier = iconModifier, onClick = {
-                onBackClick.invoke()
-            }) {
-                Icon(
-                    modifier = Modifier.size(22.dp),
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "back",
-                    tint = Color.Black
-                )
-            }
-        }
-    )
 }

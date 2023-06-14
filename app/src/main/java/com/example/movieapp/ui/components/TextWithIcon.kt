@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TextWithIcon(icon: ImageVector, tint: Color, title: String) {
+fun TextWithIcon(modifier: Modifier, icon: ImageVector, tint: Color, title: String) {
     Row(
-        modifier = Modifier.padding(top = 10.dp),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(

@@ -121,28 +121,5 @@ fun CreditsUIItem(
             }
         }
 
-        /*creditResponse.value.let { result ->
-
-            when (result) {
-                is DataHandler.Failure -> {
-                }
-
-                DataHandler.Loading -> {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(5.dp)
-                    ) {
-                        MovieProgress()
-                    }
-                }
-
-                is DataHandler.Success -> {
-
-                }
-            }
-        }*/
-
     }
 }

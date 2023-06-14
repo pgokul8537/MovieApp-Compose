@@ -23,4 +23,5 @@ interface MovieRepository {
     fun getPersonImages(movieId: String): Flow<PersonImagesResponse>
     fun getMovieCredits(movieId: String): Flow<CreditResponse>
     fun getPersonDetails(personId: String): Flow<PersonDetailResponse>
+    fun getPersonMovies(personId: String): Flow<MovieResponse>
 }

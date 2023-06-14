@@ -7,24 +7,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.add
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,16 +36,7 @@ fun AllCreditsListItem(
     creditList: List<CreditResponse.CreditItem>,
     onItemClick: (movieId: Int?) -> Unit
 ) {
-    val showShimmer = remember { mutableStateOf(true) }
     Surface {
-        val contentPadding = WindowInsets.navigationBars.add(
-            WindowInsets(
-                left = 16.dp,
-                right = 16.dp,
-                top = 16.dp,
-                bottom = 16.dp
-            )
-        ).asPaddingValues()
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Adaptive(160.dp),
             modifier = Modifier.fillMaxSize(),
@@ -60,7 +44,7 @@ fun AllCreditsListItem(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             flingBehavior = ScrollableDefaults.flingBehavior(),
             verticalItemSpacing = 16.dp
-        ){
+        ) {
             items(count = creditList.size) {
                 val item = creditList[it]
                 if (item != null) {
@@ -82,12 +66,14 @@ fun AllCreditsListItem(
                                 model = item.getDefaultImagePath(),
                                 contentScale = ContentScale.FillBounds,
                                 contentDescription = item.name,
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .shimmerEffect()
                             )
                         }
                         if (!item.name.isNullOrEmpty()) {
                             Text(
-                                text = item.name!!,
+                                text = item.name,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 14.sp,
                                 maxLines = 2,
@@ -101,11 +87,9 @@ fun AllCreditsListItem(
                         }
                         if (!item.character.isNullOrEmpty()) {
                             Text(
-                                text = "(${item.character!!})",
+                                text = "(${item.character})",
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 14.sp,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
                                 modifier = Modifier
                                     .padding(top = 10.dp)
                                     .fillMaxWidth(),
@@ -118,8 +102,6 @@ fun AllCreditsListItem(
                                 text = "(${item.job})",
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 14.sp,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
                                 modifier = Modifier
                                     .padding(top = 10.dp)
                                     .fillMaxWidth(),
@@ -131,14 +113,5 @@ fun AllCreditsListItem(
                 }
             }
         }
-        /*LazyRow(
-            contentPadding = contentPadding,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            content = {
-
-            }
-        )*/
     }
-
-
 }

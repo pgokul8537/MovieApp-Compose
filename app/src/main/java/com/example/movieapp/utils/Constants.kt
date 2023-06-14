@@ -17,6 +17,8 @@ object Constants {
     var URL_MOVIE_IMAGES: String = "movie/%1\$s/images"
     var URL_PERSON_IMAGES: String = "person/%1\$s/images"
     var URL_PERSON_CREDITS_MOVIES: String = "person/%1\$s/movie_credits"
+    var URL_PERSON_MOVIES: String =
+        "/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_people=%1\$s"
     const val URL_TRENDING_MOVIES: String = "trending/movie/day"
 
 }

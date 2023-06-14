@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.movieapp.NavigationRoute
 import com.example.movieapp.network.model.CreditResponse
 import com.example.movieapp.ui.components.AllCreditsListItem
 import kotlinx.coroutines.launch
@@ -35,11 +36,7 @@ fun CreditsViewAllScreen(
 
     }
     Column(modifier = Modifier.fillMaxSize()) {
-        TabRow(
-            pagerState.currentPage/*, indicator = { tabPositions ->
-                TabRowDefaults.Indicator(color = Color.Red)
-            }*/
-        ) {
+        TabRow(pagerState.currentPage) {
 
             pages.forEachIndexed { index, page ->
                 Tab(
@@ -63,52 +60,33 @@ fun CreditsViewAllScreen(
             when (pages[index]) {
                 CreditsPage.CAST -> {
                     creditResponse.cast?.let { list ->
-                        AllCreditsListItem(list, onItemClick = {
-
+                        AllCreditsListItem(list, onItemClick = { personId ->
+                            navHostController.apply {
+                                currentBackStackEntry?.savedStateHandle?.set(
+                                    "movie_id",
+                                    personId
+                                )
+                                navigate(NavigationRoute.PERSON_DETAILS.route)
+                            }
                         })
                     }
                 }
 
                 CreditsPage.CREW -> {
                     creditResponse.crew?.let { list ->
-                        AllCreditsListItem(list, onItemClick = {
-
+                        AllCreditsListItem(list, onItemClick = { personId ->
+                            navHostController.apply {
+                                currentBackStackEntry?.savedStateHandle?.set(
+                                    "movie_id",
+                                    personId
+                                )
+                                navigate(NavigationRoute.PERSON_DETAILS.route)
+                            }
                         })
                     }
                 }
             }
-            /*creditResponse.value.let {
-                when (it) {
-                    is DataHandler.Failure -> {
-
-                    }
-
-                    DataHandler.Loading -> {}
-                    is DataHandler.Success -> {
-                        val response = it.data
-                        when (pages[index]) {
-                            CreditsPage.CAST -> {
-                                response.cast?.let { list ->
-                                    AllCreditsListItem(list, onItemClick = {
-
-                                    })
-                                }
-                            }
-
-                            CreditsPage.CREW -> {
-                                response.crew?.let { list ->
-                                    AllCreditsListItem(list, onItemClick = {
-
-                                    })
-                                }
-                            }
-                        }
-                    }
-                }
-            }*/
-
         }
-
     }
 }
 

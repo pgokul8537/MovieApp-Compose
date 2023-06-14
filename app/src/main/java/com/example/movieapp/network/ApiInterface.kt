@@ -19,6 +19,7 @@ interface ApiInterface {
 
     @GET
     suspend fun getMoviesImages(@Url url: String): MovieImagesResponse
+
     @GET
     suspend fun getPersonImages(@Url url: String): PersonImagesResponse
 
@@ -33,4 +34,10 @@ interface ApiInterface {
 
     @GET
     suspend fun getMovieCredits(@Url url: String): CreditResponse
+
+    @GET("discover/movie")
+    suspend fun getPersonMovies(
+        @Query("page") pageNo: Int,
+        @Query("with_people") personId: String
+    ): MovieResponse
 }

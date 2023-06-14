@@ -1,6 +1,5 @@
 package com.example.movieapp.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -12,8 +11,8 @@ import com.example.movieapp.network.model.MovieDetailsResponse
 import com.example.movieapp.network.model.MovieImagesResponse
 import com.example.movieapp.network.model.MovieResponse
 import com.example.movieapp.network.model.PersonDetailResponse
+import com.example.movieapp.network.model.PersonImagesResponse
 import com.example.movieapp.repository.MovieRepository
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,6 +34,13 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
         mutableStateOf(DataHandler.Loading)
     var similarMoviesResponse: MutableState<DataHandler<MovieResponse>> =
         mutableStateOf(DataHandler.Loading)
+    var personMoviesResponse: MutableState<DataHandler<MovieResponse>> =
+        mutableStateOf(DataHandler.Loading)
+
+    /*private val _personMoviesResponse =
+        MutableStateFlow<DataHandler<MovieResponse>>(DataHandler.Loading)
+    val personMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _personMoviesResponse*/
+
     private val _trendingMoviesResponse =
         MutableStateFlow<DataHandler<MovieResponse>>(DataHandler.Loading)
     val trendingMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _trendingMoviesResponse
@@ -46,6 +52,10 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
     private val _movieImagesResponse =
         MutableStateFlow<DataHandler<MovieImagesResponse>>(DataHandler.Loading)
     val movieImagesResponse: StateFlow<DataHandler<MovieImagesResponse>> = _movieImagesResponse
+
+    private val _personImagesResponse =
+        MutableStateFlow<DataHandler<PersonImagesResponse>>(DataHandler.Loading)
+    val personImagesResponse: StateFlow<DataHandler<PersonImagesResponse>> = _personImagesResponse
     private val _creditResponse =
         MutableStateFlow<DataHandler<CreditResponse>>(DataHandler.Loading)
     val creditResponse: StateFlow<DataHandler<CreditResponse>> = _creditResponse
@@ -61,7 +71,6 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     popularMoviesResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
                 }
         }
     }
@@ -73,7 +82,6 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     nowPlayingMoviesResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
                 }
         }
     }
@@ -85,7 +93,6 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     upcomingMoviesResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
                 }
         }
     }
@@ -97,7 +104,6 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     _trendingMoviesResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
                 }
         }
     }
@@ -109,7 +115,6 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     topRatedMoviesResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
                 }
         }
     }
@@ -121,7 +126,6 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     _moviesDetailsResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
                 }
         }
     }
@@ -133,19 +137,17 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     _movieImagesResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
                 }
         }
     }
 
     fun getPersonImages(personId: Int) {
         viewModelScope.launch {
-            movieRepository.getMoviesImages(personId.toString())
+            movieRepository.getPersonImages(personId.toString())
                 .catch { exception ->
 
                 }.collect { movies ->
-                    _movieImagesResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
+                    _personImagesResponse.value = DataHandler.Success(movies)
                 }
         }
     }
@@ -157,7 +159,6 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     _personDetailResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
                 }
         }
     }
@@ -169,7 +170,6 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     _creditResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
                 }
         }
     }
@@ -181,7 +181,17 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     similarMoviesResponse.value = DataHandler.Success(movies)
-                    Log.e("movies", Gson().toJson(movies))
+                }
+        }
+    }
+
+    fun getPersonMovies(personId: Int) {
+        viewModelScope.launch {
+            movieRepository.getPersonMovies(personId.toString())
+                .catch { exception ->
+
+                }.collect { movies ->
+                    personMoviesResponse.value = DataHandler.Success(movies)
                 }
         }
     }

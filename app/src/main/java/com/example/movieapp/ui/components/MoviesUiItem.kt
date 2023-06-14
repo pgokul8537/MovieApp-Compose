@@ -32,7 +32,7 @@ fun MoviesUiItem(
     popularMoviesResponse: DataHandler<MovieResponse>,
     title: String,
     itemClick: (movieId: Int?) -> Unit,
-    viewAllItemClick: () -> Unit
+    viewAllItemClick: () -> Unit, toShowViewAll: Boolean = true
 ) {
     Column(
         modifier = Modifier
@@ -52,25 +52,26 @@ fun MoviesUiItem(
                 textAlign = TextAlign.Start,
                 fontSize = 20.sp
             )
-            Surface(
-                modifier = Modifier,
-                shape = CircleShape,
-                color = Color.Red.copy(alpha = 0.5f)
-            ) {
-                Text(
-                    text = "View All",
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
-                    modifier = Modifier
-                        .padding(top = 5.dp, bottom = 5.dp, start = 10.dp, end = 10.dp)
-                        .clickable {
-                            viewAllItemClick.invoke()
-                        },
-                    textAlign = TextAlign.Start,
-                    fontSize = 16.sp
-                )
+            if (toShowViewAll) {
+                Surface(
+                    modifier = Modifier,
+                    shape = CircleShape,
+                    color = Color.Red.copy(alpha = 0.5f)
+                ) {
+                    Text(
+                        text = "View All",
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White,
+                        modifier = Modifier
+                            .padding(top = 5.dp, bottom = 5.dp, start = 10.dp, end = 10.dp)
+                            .clickable {
+                                viewAllItemClick.invoke()
+                            },
+                        textAlign = TextAlign.Start,
+                        fontSize = 16.sp
+                    )
+                }
             }
-
         }
 
         when (popularMoviesResponse) {
