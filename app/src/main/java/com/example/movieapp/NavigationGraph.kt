@@ -21,6 +21,9 @@ import com.example.movieapp.viewmodel.MovieViewModel
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController = navController,
         startDestination = BottomNavItem.Movies.route,
+        enterTransition = {
+            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
+        },
         exitTransition = {
             slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
         },
@@ -67,6 +70,8 @@ fun NavigationGraph(navController: NavHostController) {
                     )
                 }
             }
+
+
         }
         composable(NavigationRoute.PERSON_DETAILS.route) {
             val movieId =
