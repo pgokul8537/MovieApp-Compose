@@ -30,7 +30,7 @@ fun BottomNavigation(navController: NavController) {
     when (navBackStackEntry?.destination?.route) {
         NavigationRoute.MOVIES_VIEW_ALL.route, NavigationRoute.MOVIE_DETAILS.route, NavigationRoute.CREDITS_VIEW_ALL.route, NavigationRoute.PERSON_DETAILS.route -> {
             // Show BottomBar and TopBar
-            bottomBarState.value = false
+            bottomBarState.value = true
         }
 
         else -> {
@@ -41,8 +41,7 @@ fun BottomNavigation(navController: NavController) {
         NavigationBar(containerColor = Color.Black, tonalElevation = 16.dp) {
             bottomNavItems.forEach { item ->
                 val selected = currentDestination?.hierarchy?.any { it.route == item.route } == true
-                NavigationBarItem(
-                    selected = selected,
+                NavigationBarItem(selected = selected,
                     colors = NavigationBarItemDefaults.colors(Color.Red),
                     onClick = {
                         navController.navigate(item.route) {

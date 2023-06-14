@@ -19,11 +19,17 @@ import com.example.movieapp.viewmodel.MovieViewModel
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
-    NavHost(
-        navController = navController,
-        startDestination = BottomNavItem.Movies.route
-    )
-    {
+    NavHost(navController = navController,
+        startDestination = BottomNavItem.Movies.route,
+        exitTransition = {
+            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
+        },
+        popEnterTransition = {
+            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
+        },
+        popExitTransition = {
+            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
+        }) {
         composable(NavigationRoute.MOVIES.route) {
             val viewModel = hiltViewModel<MovieViewModel>()
             MoviesScreen(viewModel, navController)
@@ -34,73 +40,35 @@ fun NavigationGraph(navController: NavHostController) {
         composable(NavigationRoute.EXPLORE.route) {
             ExploreScreen()
         }
-        composable(NavigationRoute.MOVIE_DETAILS.route, enterTransition = {
-            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
-        }, exitTransition = {
-            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
-        }, popEnterTransition = {
-            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
-        }, popExitTransition = {
-            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
-        }) {
+        composable(NavigationRoute.MOVIE_DETAILS.route) {
             val movieId =
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("movie_id")
             MovieDetailsScreen(movieId = movieId, navHostController = navController)
         }
-        composable(NavigationRoute.MOVIES_VIEW_ALL.route, enterTransition = {
-            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
-        }, exitTransition = {
-            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
-        }, popEnterTransition = {
-            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
-        }, popExitTransition = {
-            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
-        }) {
+        composable(NavigationRoute.MOVIES_VIEW_ALL.route) {
             navController.previousBackStackEntry?.savedStateHandle?.apply {
                 val title = get<String>("title")
                 val url = get<String>("url")
                 title?.let { title ->
                     url?.let { url ->
                         MovieViewAllScreen(
-                            title = title, url = url,
-                            navHostController = navController
+                            title = title, url = url, navHostController = navController
                         )
                     }
                 }
             }
         }
-        composable(NavigationRoute.CREDITS_VIEW_ALL.route, enterTransition = {
-            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
-        }, exitTransition = {
-            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
-        }, popEnterTransition = {
-            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
-        }, popExitTransition = {
-            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
-        }) {
-            val viewModel = hiltViewModel<MovieViewModel>()
+        composable(NavigationRoute.CREDITS_VIEW_ALL.route) {
             navController.previousBackStackEntry?.savedStateHandle?.apply {
                 val creditResponse = get<CreditResponse>("credit_response")
-                val url = get<String>("url")
                 creditResponse?.let { response ->
                     CreditsViewAllScreen(
-                        response,
-                        navHostController = navController
+                        response, navHostController = navController
                     )
                 }
             }
-
-
         }
-        composable(NavigationRoute.PERSON_DETAILS.route, enterTransition = {
-            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
-        }, exitTransition = {
-            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
-        }, popEnterTransition = {
-            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
-        }, popExitTransition = {
-            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
-        }) {
+        composable(NavigationRoute.PERSON_DETAILS.route) {
             val movieId =
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("movie_id")
             PersonDetailsScreen(personId = movieId, navHostController = navController)
