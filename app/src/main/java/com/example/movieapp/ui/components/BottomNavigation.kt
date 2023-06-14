@@ -30,7 +30,7 @@ fun BottomNavigation(navController: NavController) {
     when (navBackStackEntry?.destination?.route) {
         NavigationRoute.MOVIES_VIEW_ALL.route, NavigationRoute.MOVIE_DETAILS.route, NavigationRoute.CREDITS_VIEW_ALL.route, NavigationRoute.PERSON_DETAILS.route -> {
             // Show BottomBar and TopBar
-            bottomBarState.value = true
+            bottomBarState.value = false
         }
 
         else -> {

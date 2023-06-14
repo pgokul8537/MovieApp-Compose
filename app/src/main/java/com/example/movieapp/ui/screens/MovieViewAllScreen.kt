@@ -61,9 +61,11 @@ fun MovieViewAllScreen(
         )
     }
     ) {
-        Surface(modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues = it)) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues = it)
+        ) {
             when (pagingItems.loadState.refresh) {
                 is LoadState.Error -> {
                     (pagingItems.loadState.refresh as LoadState.Error).error.also {
