@@ -3,11 +3,11 @@ package com.example.movieapp
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.movieapp.network.model.CreditResponse
 import com.example.movieapp.ui.screens.CreditsViewAllScreen
 import com.example.movieapp.ui.screens.ExploreScreen
 import com.example.movieapp.ui.screens.MovieDetailsScreen
@@ -79,7 +79,18 @@ fun NavigationGraph(navController: NavHostController) {
             slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
         }) {
             val viewModel = hiltViewModel<MovieViewModel>()
-            CreditsViewAllScreen(viewModel.creditResponse.collectAsState(),navHostController = navController)
+            navController.previousBackStackEntry?.savedStateHandle?.apply {
+                val creditResponse = get<CreditResponse>("credit_response")
+                val url = get<String>("url")
+                creditResponse?.let { response ->
+                    CreditsViewAllScreen(
+                        response,
+                        navHostController = navController
+                    )
+                }
+            }
+
+
         }
         composable(NavigationRoute.PERSON_DETAILS.route, enterTransition = {
             slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))

@@ -33,46 +33,13 @@ fun CreditsUIItem(
     creditResponse: State<DataHandler<CreditResponse>>,
     title: String,
     itemClick: (movieId: Int?) -> Unit,
-    viewAllItemClick: () -> Unit
+    viewAllItemClick: (response: CreditResponse) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 15.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = title,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                textAlign = TextAlign.Start,
-                fontSize = 20.sp
-            )
-            Surface(
-                modifier = Modifier,
-                shape = CircleShape,
-                color = Color.Red.copy(alpha = 0.5f)
-            ) {
-                Text(
-                    text = "View All",
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
-                    modifier = Modifier
-                        .padding(top = 5.dp, bottom = 5.dp, start = 10.dp, end = 10.dp)
-                        .clickable {
-                            viewAllItemClick.invoke()
-                        },
-                    textAlign = TextAlign.Start,
-                    fontSize = 16.sp
-                )
-            }
-
-        }
         creditResponse.value.let { result ->
 
             when (result) {
@@ -80,6 +47,7 @@ fun CreditsUIItem(
                 }
 
                 DataHandler.Loading -> {
+
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
@@ -91,6 +59,40 @@ fun CreditsUIItem(
                 }
 
                 is DataHandler.Success -> {
+                    val response = result.data
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, top = 10.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = title,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            textAlign = TextAlign.Start,
+                            fontSize = 20.sp
+                        )
+                        Surface(
+                            modifier = Modifier,
+                            shape = CircleShape,
+                            color = Color.Red.copy(alpha = 0.5f)
+                        ) {
+                            Text(
+                                text = "View All",
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .padding(top = 5.dp, bottom = 5.dp, start = 10.dp, end = 10.dp)
+                                    .clickable {
+                                        viewAllItemClick.invoke(response)
+                                    },
+                                textAlign = TextAlign.Start,
+                                fontSize = 16.sp
+                            )
+                        }
+
+                    }
                     val contentPadding = WindowInsets.navigationBars.add(
                         WindowInsets(
                             left = 16.dp,
@@ -118,6 +120,29 @@ fun CreditsUIItem(
                 }
             }
         }
+
+        /*creditResponse.value.let { result ->
+
+            when (result) {
+                is DataHandler.Failure -> {
+                }
+
+                DataHandler.Loading -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp)
+                    ) {
+                        MovieProgress()
+                    }
+                }
+
+                is DataHandler.Success -> {
+
+                }
+            }
+        }*/
 
     }
 }

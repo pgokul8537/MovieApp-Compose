@@ -12,13 +12,13 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,29 +45,25 @@ fun MovieViewAllScreen(
     navHostController: NavHostController
 ) {
     val pagingItems = viewModel.getAllMovies(url).collectAsLazyPagingItems()
-    val isLoading = remember {
-        mutableStateOf(true)
-    }
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = title,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }, navigationIcon = {
-                    IconButton(onClick = {
-                        navHostController.popBackStack()
-                    }) {
-                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
-                    }
+    Scaffold(topBar = {
+        TopAppBar(
+            title = {
+                Text(
+                    text = title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }, navigationIcon = {
+                IconButton(onClick = {
+                    navHostController.popBackStack()
+                }) {
+                    Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
                 }
-            )
-        }
-    ) { paddingValues ->
-        Surface(modifier = Modifier.padding(paddingValues = paddingValues)) {
+            }
+        )
+    }
+    ) {
+        Surface(modifier = Modifier.padding(paddingValues = it)) {
             when (pagingItems.loadState.refresh) {
                 is LoadState.Error -> {
                     (pagingItems.loadState.refresh as LoadState.Error).error.also {
@@ -127,5 +123,4 @@ fun MovieViewAllScreen(
 
         }
     }
-
 }

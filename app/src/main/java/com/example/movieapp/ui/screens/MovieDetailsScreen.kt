@@ -190,6 +190,7 @@ fun MovieDetailsScreen(
                                     }
                                     Spacer(modifier = Modifier.size(10.dp))
                                     Text(
+                                        modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                                         text = "Overview",
                                         fontSize = 22.sp,
                                         fontWeight = FontWeight.Bold,
@@ -198,6 +199,7 @@ fun MovieDetailsScreen(
                                     Spacer(modifier = Modifier.size(10.dp))
                                     movieResponse.overview?.let { overview ->
                                         Text(
+                                            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                                             text = overview,
                                             fontSize = 16.sp,
                                             fontWeight = FontWeight.Normal,
@@ -216,6 +218,10 @@ fun MovieDetailsScreen(
                                             }
                                         }, viewAllItemClick = {
                                             navHostController.apply {
+                                                currentBackStackEntry?.savedStateHandle?.set(
+                                                    "credit_response",
+                                                    it
+                                                )
                                                 navigate(NavigationRoute.CREDITS_VIEW_ALL.route)
                                             }
                                         }
@@ -255,12 +261,10 @@ fun MovieDetailsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            /*.background(
-                color = Color.Green
-            )*/
-        ) {
-            MovieDetailsToolbar(onBackClick = {
 
+            ) {
+            MovieDetailsToolbar(onBackClick = {
+                navHostController.popBackStack()
             })
         }
     }
