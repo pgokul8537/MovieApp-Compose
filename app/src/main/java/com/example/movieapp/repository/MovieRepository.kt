@@ -6,6 +6,8 @@ import com.example.movieapp.network.model.MovieDetailsResponse
 import com.example.movieapp.network.model.MovieImagesResponse
 import com.example.movieapp.network.model.MovieItem
 import com.example.movieapp.network.model.MovieResponse
+import com.example.movieapp.network.model.PersonDetailResponse
+import com.example.movieapp.network.model.PersonImagesResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
@@ -18,5 +20,7 @@ interface MovieRepository {
     fun getMoviesDetails(movieId: String): Flow<MovieDetailsResponse>
     fun getSimilarMovies(movieId: String): Flow<MovieResponse>
     fun getMoviesImages(movieId: String): Flow<MovieImagesResponse>
+    fun getPersonImages(movieId: String): Flow<PersonImagesResponse>
     fun getMovieCredits(movieId: String): Flow<CreditResponse>
+    fun getPersonDetails(personId: String): Flow<PersonDetailResponse>
 }

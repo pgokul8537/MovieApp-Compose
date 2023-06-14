@@ -5,13 +5,9 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class MovieImagesResponse(
-    @SerializedName("backdrops")
-    val backdrops: List<ImageItem>?,
+data class PersonImagesResponse(
     @SerializedName("id")
     val id: Int?,
-    @SerializedName("logos")
-    val logos: List<ImageItem>?,
-    @SerializedName("posters")
-    val posters: List<ImageItem>?
+    @SerializedName("profiles")
+    val profiles: List<ImageItem>?
 ) : Parcelable

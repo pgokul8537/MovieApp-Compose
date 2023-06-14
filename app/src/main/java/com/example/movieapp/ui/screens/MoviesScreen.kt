@@ -13,11 +13,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.movieapp.DataHandler
@@ -27,16 +25,15 @@ import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.MoviesUiItem
 import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.MovieViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController) {
-    val systemUiController = rememberSystemUiController()
+    /*val systemUiController = rememberSystemUiController()
     SideEffect {
         // set transparent color so that our image is visible
         // behind the status bar
         systemUiController.setStatusBarColor(color = Color.Transparent)
-    }
+    }*/
     LaunchedEffect(key1 = "", block = {
         viewModel.getPopularMovies(1)
         viewModel.getNowPlayingMovies(1)

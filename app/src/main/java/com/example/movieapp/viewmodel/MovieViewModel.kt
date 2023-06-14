@@ -11,6 +11,7 @@ import com.example.movieapp.network.model.CreditResponse
 import com.example.movieapp.network.model.MovieDetailsResponse
 import com.example.movieapp.network.model.MovieImagesResponse
 import com.example.movieapp.network.model.MovieResponse
+import com.example.movieapp.network.model.PersonDetailResponse
 import com.example.movieapp.repository.MovieRepository
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,6 +49,10 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
     private val _creditResponse =
         MutableStateFlow<DataHandler<CreditResponse>>(DataHandler.Loading)
     val creditResponse: StateFlow<DataHandler<CreditResponse>> = _creditResponse
+
+    private val _personDetailResponse =
+        MutableStateFlow<DataHandler<PersonDetailResponse>>(DataHandler.Loading)
+    val personDetailResponse: StateFlow<DataHandler<PersonDetailResponse>> = _personDetailResponse
 
     fun getPopularMovies(pageNo: Int) {
         viewModelScope.launch {
@@ -128,6 +133,30 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
 
                 }.collect { movies ->
                     _movieImagesResponse.value = DataHandler.Success(movies)
+                    Log.e("movies", Gson().toJson(movies))
+                }
+        }
+    }
+
+    fun getPersonImages(personId: Int) {
+        viewModelScope.launch {
+            movieRepository.getMoviesImages(personId.toString())
+                .catch { exception ->
+
+                }.collect { movies ->
+                    _movieImagesResponse.value = DataHandler.Success(movies)
+                    Log.e("movies", Gson().toJson(movies))
+                }
+        }
+    }
+
+    fun getPersonDetails(personId: Int) {
+        viewModelScope.launch {
+            movieRepository.getPersonDetails(personId.toString())
+                .catch { exception ->
+
+                }.collect { movies ->
+                    _personDetailResponse.value = DataHandler.Success(movies)
                     Log.e("movies", Gson().toJson(movies))
                 }
         }

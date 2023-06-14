@@ -36,10 +36,16 @@ class MovieRepositoryImpl @Inject constructor(val apiInterface: ApiInterface) : 
     override fun getMoviesImages(movieId: String) =
         flow { emit(apiInterface.getMoviesImages(format(Constants.URL_MOVIE_IMAGES, movieId))) }
 
+    override fun getPersonImages(movieId: String) =
+        flow { emit(apiInterface.getPersonImages(format(Constants.URL_PERSON_IMAGES, movieId))) }
+
     override fun getSimilarMovies(movieId: String) =
         flow { emit(apiInterface.getMovies(format(Constants.URL_SIMILAR_MOVIES, movieId), 1)) }
 
     override fun getMovieCredits(movieId: String) =
         flow { emit(apiInterface.getMovieCredits(format(Constants.URL_CREDITS_MOVIES, movieId))) }
+
+    override fun getPersonDetails(personId: String) =
+        flow { emit(apiInterface.getPersonDetails(format(Constants.URL_PERSON_DETAILS, personId))) }
 
 }

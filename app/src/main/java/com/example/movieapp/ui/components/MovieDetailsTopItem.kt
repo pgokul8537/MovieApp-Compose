@@ -11,13 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.movieapp.network.model.ImageItem
 import com.example.movieapp.network.model.MovieDetailsResponse
 import com.example.movieapp.network.model.MovieImagesResponse
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MovieDetailsTopItem(
-    imageList: List<MovieImagesResponse.MovieImage>,
+    imageList: List<ImageItem>,
     movieDetailsResponse: MovieDetailsResponse
 ) {
     val pageState =

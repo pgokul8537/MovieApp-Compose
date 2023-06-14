@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -21,6 +22,14 @@ fun PersonDetailsScreen(
     personId: Int?,
     navHostController: NavHostController
 ) {
+    LaunchedEffect(key1 = "", block = {
+        personId?.let { personId ->
+            /*viewModel.getp(movieId)
+            viewModel.getMoviesImages(movieId)
+            viewModel.getSimilarMovies(movieId)
+            viewModel.getMovieCredits(movieId)*/
+        }
+    })
     Surface {
         Column(modifier = Modifier.fillMaxSize()) {
             Text(

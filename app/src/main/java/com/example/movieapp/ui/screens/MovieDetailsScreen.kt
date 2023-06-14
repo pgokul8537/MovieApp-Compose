@@ -1,6 +1,5 @@
 package com.example.movieapp.ui.screens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,7 +57,7 @@ import com.example.movieapp.ui.components.shimmerEffect
 import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.MovieViewModel
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MovieDetailsScreen(
     viewModel: MovieViewModel = hiltViewModel(), movieId: Int?, navHostController: NavHostController
