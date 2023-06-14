@@ -10,20 +10,19 @@ import com.example.movieapp.network.model.PersonDetailResponse
 import com.example.movieapp.network.model.PersonImagesResponse
 import kotlinx.coroutines.flow.Flow
 
-interface MovieRepository {
-    fun getPopularMovies(pageNo: Int): Flow<MovieResponse>
-    fun getTopRatedMovies(pageNo: Int): Flow<MovieResponse>
-    fun getNowPlayingMovies(pageNo: Int): Flow<MovieResponse>
-    fun getUpcomingMovies(pageNo: Int): Flow<MovieResponse>
-    fun getAllMovies(url: String): Flow<PagingData<MovieItem>>
-    fun getTrendingMovies(): Flow<MovieResponse>
-    fun getMoviesDetails(movieId: String): Flow<MovieDetailsResponse>
-    fun getSimilarMovies(movieId: String): Flow<MovieResponse>
-    fun getMoviesImages(movieId: String): Flow<MovieImagesResponse>
+interface TvRepository {
+    fun getPopularTvShows(pageNo: Int): Flow<MovieResponse>
+    fun getTopRatedTvShows(pageNo: Int): Flow<MovieResponse>
+    fun getNowPlayingTvShows(pageNo: Int): Flow<MovieResponse>
+    fun getUpcomingTvShows(pageNo: Int): Flow<MovieResponse>
+    fun getTrendingTvShows(): Flow<MovieResponse>
+    fun getAllTvShows(url: String): Flow<PagingData<MovieItem>>
+    fun getPersonTvShows(personId: String): Flow<MovieResponse>
+    fun getSimilarTvShows(movieId: String): Flow<MovieResponse>
+    fun getTvShowDetails(movieId: String): Flow<MovieDetailsResponse>
+    fun getTvShowImages(movieId: String): Flow<MovieImagesResponse>
     fun getPersonImages(movieId: String): Flow<PersonImagesResponse>
     fun getMovieCredits(movieId: String): Flow<CreditResponse>
     fun getPersonDetails(personId: String): Flow<PersonDetailResponse>
-    fun getPersonMovies(personId: String): Flow<MovieResponse>
 
-    fun getMultiSearchData(query: String): Flow<MovieResponse>
 }

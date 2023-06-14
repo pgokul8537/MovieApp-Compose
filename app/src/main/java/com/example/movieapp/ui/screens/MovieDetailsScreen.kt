@@ -135,8 +135,7 @@ fun MovieDetailsScreen(
                                                                     text = it1,
                                                                     fontWeight = FontWeight.SemiBold,
                                                                     color = Color.White,
-                                                                    modifier = Modifier
-                                                                        .padding(
+                                                                    modifier = Modifier.padding(
                                                                             top = 5.dp,
                                                                             bottom = 5.dp,
                                                                             start = 10.dp,
@@ -202,32 +201,28 @@ fun MovieDetailsScreen(
                                         )
                                     }
                                     Spacer(modifier = Modifier.size(10.dp))
-                                    CreditsUIItem(creditResponse, "Cast",
-                                        itemClick = { movieId ->
-                                            navHostController.apply {
-                                                currentBackStackEntry?.savedStateHandle?.set(
-                                                    "movie_id",
-                                                    movieId
-                                                )
-                                                navigate(NavigationRoute.PERSON_DETAILS.route)
-                                            }
-                                        }, viewAllItemClick = {
-                                            navHostController.apply {
-                                                currentBackStackEntry?.savedStateHandle?.set(
-                                                    "credit_response",
-                                                    it
-                                                )
-                                                navigate(NavigationRoute.CREDITS_VIEW_ALL.route)
-                                            }
+                                    CreditsUIItem(creditResponse, "Cast", itemClick = { movieId ->
+                                        navHostController.apply {
+                                            currentBackStackEntry?.savedStateHandle?.set(
+                                                "movie_id", movieId
+                                            )
+                                            navigate(NavigationRoute.PERSON_DETAILS.route)
                                         }
-                                    )
+                                    }, viewAllItemClick = {
+                                        navHostController.apply {
+                                            currentBackStackEntry?.savedStateHandle?.set(
+                                                "credit_response", it
+                                            )
+                                            navigate(NavigationRoute.CREDITS_VIEW_ALL.route)
+                                        }
+                                    })
                                     Spacer(modifier = Modifier.size(10.dp))
-                                    MoviesUiItem(similarMoviesResponse, "Similar Movies",
+                                    MoviesUiItem(similarMoviesResponse,
+                                        "Similar Movies",
                                         itemClick = { movieId ->
                                             navHostController.apply {
                                                 currentBackStackEntry?.savedStateHandle?.set(
-                                                    "movie_id",
-                                                    movieId
+                                                    "movie_id", movieId
                                                 )
                                                 navigate(NavigationRoute.MOVIE_DETAILS.route)
                                             }
@@ -237,8 +232,7 @@ fun MovieDetailsScreen(
                                                 currentBackStackEntry?.savedStateHandle?.apply {
                                                     set("title", "Upcoming Movies")
                                                     set(
-                                                        "url",
-                                                        Constants.URL_UPCOMING_MOVIES
+                                                        "url", Constants.URL_UPCOMING_MOVIES
                                                     )
                                                 }
                                                 navigate(NavigationRoute.MOVIES_VIEW_ALL.route)

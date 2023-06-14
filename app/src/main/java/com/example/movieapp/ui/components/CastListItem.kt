@@ -51,7 +51,7 @@ fun CastListItem(item: CreditResponse.CreditItem?, onItemClick: (movieId: Int?) 
                 text = item?.name!!,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
-                maxLines = 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .padding(top = 10.dp)
@@ -65,7 +65,7 @@ fun CastListItem(item: CreditResponse.CreditItem?, onItemClick: (movieId: Int?) 
                 text = "(${item?.character!!})",
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,
-                maxLines = 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .padding(top = 10.dp)

@@ -37,7 +37,11 @@ interface ApiInterface {
 
     @GET("discover/movie")
     suspend fun getPersonMovies(
-        @Query("page") pageNo: Int,
-        @Query("with_people") personId: String
+        @Query("page") pageNo: Int, @Query("with_people") personId: String
+    ): MovieResponse
+
+    @GET
+    suspend fun getMultiSearchData(
+        @Url url: String, @Query("page") pageNo: Int, @Query("query") query: String
     ): MovieResponse
 }

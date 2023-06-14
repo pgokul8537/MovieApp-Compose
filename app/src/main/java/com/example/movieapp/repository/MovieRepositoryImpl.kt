@@ -22,13 +22,10 @@ class MovieRepositoryImpl @Inject constructor(val apiInterface: ApiInterface) : 
     override fun getUpcomingMovies(pageNo: Int) =
         flow { emit(apiInterface.getMovies(Constants.URL_UPCOMING_MOVIES, pageNo = pageNo)) }
 
-    override fun getAllMovies(url: String) =
-        Pager(
-            config = PagingConfig(pageSize = 10),
-            pagingSourceFactory = { AllMoviesPagingSource(apiInterface, url) }).flow
+    override fun getAllMovies(url: String) = Pager(config = PagingConfig(pageSize = 10),
+        pagingSourceFactory = { AllMoviesPagingSource(apiInterface, url) }).flow
 
-    override fun getTrendingMovies() =
-        flow { emit(apiInterface.getTrendingMovies()) }
+    override fun getTrendingMovies() = flow { emit(apiInterface.getTrendingMovies()) }
 
     override fun getMoviesDetails(movieId: String) =
         flow { emit(apiInterface.getMoviesDetails(format(Constants.URL_MOVIE_DETAILS, movieId))) }
@@ -47,6 +44,16 @@ class MovieRepositoryImpl @Inject constructor(val apiInterface: ApiInterface) : 
 
     override fun getPersonMovies(personId: String) =
         flow { emit(apiInterface.getPersonMovies(pageNo = 1, personId = personId)) }
+
+    override fun getMultiSearchData(query: String) = flow {
+        emit(
+            apiInterface.getMultiSearchData(
+                url = Constants.URL_MULTI_SEARCH,
+                pageNo = 1,
+                query = query
+            )
+        )
+    }
 
     override fun getPersonDetails(personId: String) =
         flow { emit(apiInterface.getPersonDetails(format(Constants.URL_PERSON_DETAILS, personId))) }

@@ -7,5 +7,6 @@ enum class NavigationRoute(var route: String) {
     MOVIE_DETAILS("movie/details"),
     MOVIES_VIEW_ALL("movie/view_all"),
     CREDITS_VIEW_ALL("credits/view_all"),
-    PERSON_DETAILS("person/details")
+    PERSON_DETAILS("person/details"),
+    SEARCH("search")
 }

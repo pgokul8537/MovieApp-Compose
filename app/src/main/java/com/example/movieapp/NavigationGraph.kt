@@ -14,6 +14,7 @@ import com.example.movieapp.ui.screens.MovieDetailsScreen
 import com.example.movieapp.ui.screens.MovieViewAllScreen
 import com.example.movieapp.ui.screens.MoviesScreen
 import com.example.movieapp.ui.screens.PersonDetailsScreen
+import com.example.movieapp.ui.screens.SearchScreen
 import com.example.movieapp.ui.screens.TvShowsScreen
 import com.example.movieapp.viewmodel.MovieViewModel
 
@@ -54,7 +55,7 @@ fun NavigationGraph(navController: NavHostController) {
         }, popExitTransition = {
             slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down, tween(900))
         }) {
-            ExploreScreen()
+            ExploreScreen(navHostController = navController)
         }
         composable(NavigationRoute.MOVIE_DETAILS.route, enterTransition = {
             slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
@@ -110,10 +111,33 @@ fun NavigationGraph(navController: NavHostController) {
 
 
         }
-        composable(NavigationRoute.PERSON_DETAILS.route) {
+        composable(NavigationRoute.PERSON_DETAILS.route, enterTransition = {
+            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
+        }, exitTransition = {
+            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
+        }, popEnterTransition = {
+            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(900))
+        }, popExitTransition = {
+            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(900))
+        }) {
             val movieId =
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("movie_id")
             PersonDetailsScreen(personId = movieId, navHostController = navController)
+        }
+        composable(NavigationRoute.SEARCH.route, enterTransition = {
+            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
+        }, exitTransition = {
+            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
+        }, popEnterTransition = {
+            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(900))
+        }, popExitTransition = {
+            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(900))
+        }) {
+            navController.previousBackStackEntry?.savedStateHandle?.apply {
+                SearchScreen(navHostController = navController)
+            }
+
+
         }
     }
 

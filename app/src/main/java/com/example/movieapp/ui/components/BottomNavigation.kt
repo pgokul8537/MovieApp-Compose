@@ -28,7 +28,7 @@ fun BottomNavigation(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     when (navBackStackEntry?.destination?.route) {
-        NavigationRoute.MOVIES_VIEW_ALL.route, NavigationRoute.MOVIE_DETAILS.route, NavigationRoute.CREDITS_VIEW_ALL.route, NavigationRoute.PERSON_DETAILS.route -> {
+        NavigationRoute.MOVIES_VIEW_ALL.route, NavigationRoute.SEARCH.route, NavigationRoute.MOVIE_DETAILS.route, NavigationRoute.CREDITS_VIEW_ALL.route, NavigationRoute.PERSON_DETAILS.route -> {
             // Show BottomBar and TopBar
             bottomBarState.value = false
         }
