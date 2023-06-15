@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -35,14 +34,21 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.movieapp.ui.components.SearchMovieListItem
+import com.example.movieapp.ui.components.SearchPersonListItem
+import com.example.movieapp.ui.components.SearchTvListItem
 import com.example.movieapp.viewmodel.MediaType
+import com.example.movieapp.viewmodel.SearchType
 import com.example.movieapp.viewmodel.SearchViewModel
 import com.google.gson.Gson
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    viewModel: SearchViewModel = hiltViewModel(), navHostController: NavHostController
+    url: String,
+    searchType: String,
+    viewModel: SearchViewModel = hiltViewModel(),
+    navHostController: NavHostController
 ) {
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
@@ -89,7 +95,7 @@ fun SearchScreen(
             ),
             keyboardActions = KeyboardActions(onSearch = {
                 focusManager.clearFocus()
-                viewModel.getSearchData()
+                viewModel.getSearchData(url)
             }),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search)
         )
@@ -107,21 +113,38 @@ fun SearchScreen(
             Log.e("search", Gson().toJson(searchList))
             items(count = searchList.size) {
                 val item = searchList[it]
-                if (!item.mediaType.isNullOrEmpty()) {
-                    when (item.mediaType) {
-                        MediaType.MOVIE.value -> {
-                            Text(text = "${item.title}")
-                        }
+                when (searchType) {
+                    SearchType.MOVIE.value -> {
+                        SearchMovieListItem(item, onItemClick = {})
+                    }
 
-                        MediaType.TV.value -> {
-                            Text(text = "${item.title}")
-                        }
+                    SearchType.TV.value -> {
+                        SearchTvListItem(item, onItemClick = {})
+                    }
 
-                        MediaType.PERSON.value -> {
-                            Text(text = "${item.name}")
+                    SearchType.PERSON.value -> {
+                        SearchPersonListItem(item, onItemClick = {})
+                    }
+
+                    SearchType.MULTI.value -> {
+                        if (!item.mediaType.isNullOrEmpty()) {
+                            when (item.mediaType) {
+                                MediaType.MOVIE.value -> {
+                                    SearchMovieListItem(item, onItemClick = {})
+                                }
+
+                                MediaType.TV.value -> {
+                                    SearchTvListItem(item, onItemClick = {})
+                                }
+
+                                MediaType.PERSON.value -> {
+                                    SearchPersonListItem(item, onItemClick = {})
+                                }
+                            }
                         }
                     }
                 }
+
             }
         }
     }

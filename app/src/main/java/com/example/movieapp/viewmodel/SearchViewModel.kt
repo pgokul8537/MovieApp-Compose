@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieapp.network.model.SearchResponse
 import com.example.movieapp.repository.SearchRepository
-import com.example.movieapp.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,9 +37,9 @@ class SearchViewModel @Inject constructor(val repository: SearchRepository) : Vi
         _searchText.value = text
     }
 
-    fun getSearchData() {
+    fun getSearchData(url: String) {
         viewModelScope.launch {
-            repository.getSearchData(searchText.value, Constants.URL_SEARCH_MULTI)
+            repository.getSearchData(searchText.value, url)
                 .catch { exception -> }
                 .collect { response ->
                     if (!response.results.isNullOrEmpty()) {
@@ -59,4 +58,11 @@ enum class MediaType(var value: String) {
     MOVIE("movie"),
     TV("tv"),
     PERSON("person")
+}
+
+enum class SearchType(var value: String) {
+    MOVIE("movie"),
+    TV("tv"),
+    PERSON("person"),
+    MULTI("multi")
 }

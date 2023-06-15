@@ -1,6 +1,7 @@
 package com.example.movieapp.network.model
 
 import android.os.Parcelable
+import com.example.movieapp.utils.Constants
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -35,6 +36,16 @@ data class SearchResponse(
         @SerializedName("vote_average") val voteAverage: Double?,
         @SerializedName("vote_count") val voteCount: Int?
     ) : Parcelable {
+
+        fun getDefaultImagePath(): String? {
+            if (!profilePath.isNullOrEmpty()) {
+                return "${Constants.imageUrl}$profilePath"
+            } else if (!posterPath.isNullOrEmpty()) {
+                return "${Constants.imageUrl}$posterPath"
+            }
+            return null
+        }
+
         @Parcelize
         data class KnownFor(
             @SerializedName("adult") val adult: Boolean?,

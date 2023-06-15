@@ -8,6 +8,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,6 +31,8 @@ import androidx.navigation.NavHostController
 import com.example.movieapp.NavigationRoute
 import com.example.movieapp.network.model.CreditResponse
 import com.example.movieapp.ui.components.AllCreditsListItem
+import com.example.movieapp.utils.Constants
+import com.example.movieapp.viewmodel.SearchType
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -55,6 +58,18 @@ fun CreditsViewAllScreen(
                 navHostController.popBackStack()
             }) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
+            }
+        }, actions = {
+            IconButton(onClick = {
+                navHostController.apply {
+                    currentBackStackEntry?.savedStateHandle?.apply {
+                        set("url", Constants.URL_SEARCH_PERSON)
+                        set("search_type", SearchType.PERSON.value)
+                    }
+                    navigate(NavigationRoute.SEARCH.route)
+                }
+            }) {
+                Icon(imageVector = Icons.Filled.Search, contentDescription = "search")
             }
         })
     }) {

@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,7 +33,9 @@ import androidx.paging.compose.itemKey
 import com.example.movieapp.NavigationRoute
 import com.example.movieapp.ui.components.AllMoviesListItem
 import com.example.movieapp.ui.components.MovieProgress
+import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.MovieViewModel
+import com.example.movieapp.viewmodel.SearchType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,6 +59,18 @@ fun MovieViewAllScreen(
                     navHostController.popBackStack()
                 }) {
                     Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
+                }
+            }, actions = {
+                IconButton(onClick = {
+                    navHostController.apply {
+                        currentBackStackEntry?.savedStateHandle?.apply {
+                            set("url", Constants.URL_SEARCH_MOVIE)
+                            set("search_type", SearchType.MOVIE.value)
+                        }
+                        navigate(NavigationRoute.SEARCH.route)
+                    }
+                }) {
+                    Icon(imageVector = Icons.Filled.Search, contentDescription = "search")
                 }
             }
         )

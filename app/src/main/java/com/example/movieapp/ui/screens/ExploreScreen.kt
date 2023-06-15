@@ -23,7 +23,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.movieapp.NavigationRoute
+import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.MovieViewModel
+import com.example.movieapp.viewmodel.SearchType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +45,13 @@ fun ExploreScreen(
             }
         }, actions = {
             IconButton(onClick = {
-                navHostController.navigate(NavigationRoute.SEARCH.route)
+                navHostController.apply {
+                    currentBackStackEntry?.savedStateHandle?.apply {
+                        set("url", Constants.URL_SEARCH_MULTI)
+                        set("search_type", SearchType.MULTI.value)
+                    }
+                    navigate(NavigationRoute.SEARCH.route)
+                }
             }) {
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "search")
             }

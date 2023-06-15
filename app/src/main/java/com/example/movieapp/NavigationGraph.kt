@@ -134,9 +134,16 @@ fun NavigationGraph(navController: NavHostController) {
             slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(900))
         }) {
             navController.previousBackStackEntry?.savedStateHandle?.apply {
-                SearchScreen(navHostController = navController)
+                val searchType = get<String>("search_type")
+                val url = get<String>("url")
+                searchType?.let { type ->
+                    url?.let {
+                        SearchScreen(
+                            searchType = type, url = it, navHostController = navController
+                        )
+                    }
+                }
             }
-
 
         }
     }
