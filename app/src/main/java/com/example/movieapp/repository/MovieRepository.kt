@@ -8,6 +8,7 @@ import com.example.movieapp.network.model.MovieItem
 import com.example.movieapp.network.model.MovieResponse
 import com.example.movieapp.network.model.PersonDetailResponse
 import com.example.movieapp.network.model.PersonImagesResponse
+import com.example.movieapp.network.model.SearchResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
@@ -25,5 +26,4 @@ interface MovieRepository {
     fun getPersonDetails(personId: String): Flow<PersonDetailResponse>
     fun getPersonMovies(personId: String): Flow<MovieResponse>
 
-    fun getMultiSearchData(query: String): Flow<MovieResponse>
 }

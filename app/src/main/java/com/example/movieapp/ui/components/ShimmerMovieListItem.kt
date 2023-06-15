@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.dp
+import com.example.movieapp.ui.components.common.ShimmerBrush
 
 @Composable
 fun ShimmerMovieListItem(

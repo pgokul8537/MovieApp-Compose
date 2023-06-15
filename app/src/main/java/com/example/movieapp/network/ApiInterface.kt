@@ -6,6 +6,7 @@ import com.example.movieapp.network.model.MovieImagesResponse
 import com.example.movieapp.network.model.MovieResponse
 import com.example.movieapp.network.model.PersonDetailResponse
 import com.example.movieapp.network.model.PersonImagesResponse
+import com.example.movieapp.network.model.SearchResponse
 import com.example.movieapp.utils.Constants
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -43,5 +44,5 @@ interface ApiInterface {
     @GET
     suspend fun getMultiSearchData(
         @Url url: String, @Query("page") pageNo: Int, @Query("query") query: String
-    ): MovieResponse
+    ): SearchResponse
 }

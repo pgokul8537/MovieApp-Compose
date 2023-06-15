@@ -45,16 +45,6 @@ class MovieRepositoryImpl @Inject constructor(val apiInterface: ApiInterface) : 
     override fun getPersonMovies(personId: String) =
         flow { emit(apiInterface.getPersonMovies(pageNo = 1, personId = personId)) }
 
-    override fun getMultiSearchData(query: String) = flow {
-        emit(
-            apiInterface.getMultiSearchData(
-                url = Constants.URL_MULTI_SEARCH,
-                pageNo = 1,
-                query = query
-            )
-        )
-    }
-
     override fun getPersonDetails(personId: String) =
         flow { emit(apiInterface.getPersonDetails(format(Constants.URL_PERSON_DETAILS, personId))) }
 

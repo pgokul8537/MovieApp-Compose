@@ -28,7 +28,10 @@ object Constants {
         "/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_people=%1\$s"
 
     //    Search
-    const val URL_MULTI_SEARCH: String = "search/multi"
+    const val URL_SEARCH_MULTI: String = "search/multi"
+    const val URL_SEARCH_MOVIE: String = "search/movie"
+    const val URL_SEARCH_PERSON: String = "search/person"
+    const val URL_SEARCH_TV: String = "search/tv"
 
     //    Discover
     const val URL_DISCOVER_MOVIE: String = "discover/movie"

@@ -1,4 +1,4 @@
-package com.example.movieapp.ui.components
+package com.example.movieapp.ui.components.common
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat

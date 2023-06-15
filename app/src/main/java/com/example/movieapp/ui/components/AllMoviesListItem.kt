@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.movieapp.network.model.MovieItem
+import com.example.movieapp.ui.components.common.ShimmerBrush
 
 @Composable
 fun AllMoviesListItem(item: MovieItem, onItemClick: (movieId: Int?) -> Unit) {

@@ -44,7 +44,7 @@ import com.example.movieapp.NavigationRoute
 import com.example.movieapp.ui.components.DetailScreenTopBar
 import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.MoviesUiItem
-import com.example.movieapp.ui.components.TextWithIcon
+import com.example.movieapp.ui.components.common.TextWithIcon
 import com.example.movieapp.ui.components.shimmerEffect
 import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.MovieViewModel

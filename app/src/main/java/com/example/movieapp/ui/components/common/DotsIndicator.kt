@@ -1,4 +1,4 @@
-package com.example.movieapp.ui.components
+package com.example.movieapp.ui.components.common
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding

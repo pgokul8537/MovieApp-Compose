@@ -27,6 +27,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,7 +49,7 @@ import com.example.movieapp.ui.components.DetailScreenTopBar
 import com.example.movieapp.ui.components.MovieDetailsTopItem
 import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.MoviesUiItem
-import com.example.movieapp.ui.components.TextWithIcon
+import com.example.movieapp.ui.components.common.TextWithIcon
 import com.example.movieapp.ui.components.shimmerEffect
 import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.MovieViewModel
@@ -67,12 +70,19 @@ fun MovieDetailsScreen(
     val movieDetailsResponse = viewModel.moviesDetailsResponse.collectAsState()
     val creditResponse = viewModel.creditResponse.collectAsState()
     val similarMoviesResponse = viewModel.similarMoviesResponse.value
+    val scrollState = rememberScrollState()
+    println("scroll state" + scrollState.isScrollInProgress)
+    val isCollapsed by remember {
+        derivedStateOf { scrollState.value > 200 }
+    }
+    println("isCollapsed" + isCollapsed)
+    println("scroll state" + scrollState.value)
     Surface {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues = PaddingValues())
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
 
             movieDetailsResponse.value.let { result ->
@@ -136,11 +146,11 @@ fun MovieDetailsScreen(
                                                                     fontWeight = FontWeight.SemiBold,
                                                                     color = Color.White,
                                                                     modifier = Modifier.padding(
-                                                                            top = 5.dp,
-                                                                            bottom = 5.dp,
-                                                                            start = 10.dp,
-                                                                            end = 10.dp
-                                                                        ),
+                                                                        top = 5.dp,
+                                                                        bottom = 5.dp,
+                                                                        start = 10.dp,
+                                                                        end = 10.dp
+                                                                    ),
                                                                     textAlign = TextAlign.Start,
                                                                     fontSize = 16.sp
                                                                 )
