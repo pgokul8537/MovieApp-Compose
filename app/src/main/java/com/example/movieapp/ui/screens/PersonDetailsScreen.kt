@@ -202,7 +202,8 @@ fun PersonDetailsScreen(
                         }
 
                         Spacer(modifier = Modifier.size(10.dp))
-                        MoviesUiItem(personMoviesResponse, "Movies",
+                        MoviesUiItem(
+                            personMoviesResponse, "Movies",
                             itemClick = { movieId ->
                                 navHostController.apply {
                                     currentBackStackEntry?.savedStateHandle?.set(
@@ -230,6 +231,7 @@ fun PersonDetailsScreen(
                 }
             }
         }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -238,7 +240,7 @@ fun PersonDetailsScreen(
             ) {
             DetailScreenTopBar(onBackClick = {
                 navHostController.popBackStack()
-            })
+            }, Color.Black, Color.LightGray.copy(0.5f))
         }
     }
 }

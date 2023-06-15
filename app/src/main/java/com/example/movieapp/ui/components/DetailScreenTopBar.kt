@@ -19,29 +19,43 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreenTopBar(onBackClick: () -> Unit) {
-    val iconModifier = Modifier
-        .size(50.dp)
-        .padding(start = 16.dp)
-        .background(
-            color = Color.LightGray.copy(0.5f),
-            shape = CircleShape
-        )
+fun DetailScreenTopBar(
+    onBackClick: () -> Unit, iconColor: Color, iconBgColor: Color
+) {
     TopAppBar(
         title = {
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(Color.Transparent.copy(alpha = 0.1f)),
         navigationIcon = {
-            IconButton(modifier = iconModifier, onClick = {
+            IconButton(modifier = Modifier
+                .size(50.dp)
+                .padding(start = 16.dp)
+                .background(
+                    color =  iconBgColor,
+                    shape = CircleShape
+                ), onClick = {
                 onBackClick.invoke()
             }) {
                 Icon(
                     modifier = Modifier.size(22.dp),
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = "back",
-                    tint = Color.Black
+                    tint = iconColor
                 )
             }
         }
     )
+
+    /*TopAppBar(
+        title = {
+        },
+        colors = TopAppBarDefaults.mediumTopAppBarColors(Color.Transparent.copy(alpha = 0.1f)),
+        navigationIcon = {
+            Icon(
+                modifier = Modifier.padding(start = 16.dp),
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "back"
+            )
+        }
+    )*/
 }
