@@ -42,7 +42,6 @@ fun CreditsViewAllScreen(
     pages: Array<CreditsPage> = CreditsPage.values(),
     navHostController: NavHostController
 ) {
-//    val pages = listOf("Cast", "Crew")
     val pagerState = rememberPagerState { pages.size }
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(pagerState.currentPage) {
@@ -78,9 +77,8 @@ fun CreditsViewAllScreen(
                 .fillMaxSize()
                 .padding(paddingValues = it)
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column {
                 TabRow(pagerState.currentPage) {
-
                     pages.forEachIndexed { index, page ->
                         Tab(
                             selected = pagerState.currentPage == index,

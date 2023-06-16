@@ -1,14 +1,12 @@
 package com.example.movieapp.ui.screens
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.add
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -50,129 +48,118 @@ fun MoviesScreen(
         viewModel.getTrendingMovies()
 
     })
+    val scrollState = rememberScrollState()
     val popularMoviesResponse = viewModel.popularMoviesResponse.collectAsState()
     val topRatedMoviesResponse = viewModel.topRatedMoviesResponse.collectAsState()
     val upcomingMoviesResponse = viewModel.upcomingMoviesResponse.collectAsState()
     val nowPlayingMoviesResponse = viewModel.nowPlayingMoviesResponse.collectAsState()
     val trendingMoviesResponse = viewModel.trendingMoviesResponse.collectAsState()
     Surface(modifier = Modifier.fillMaxSize()) {
-        val contentPadding = WindowInsets.navigationBars.add(
-            WindowInsets(
-                bottom = 16.dp
-            )
-        ).asPaddingValues()
-        LazyColumn(contentPadding = contentPadding, content = {
-            item {
-                trendingMoviesResponse.value.let {
-                    when (it) {
-                        is DataHandler.Failure -> {
-                        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+        ) {
+            trendingMoviesResponse.value.let {
+                when (it) {
+                    is DataHandler.Failure -> {
+                    }
 
-                        DataHandler.Loading -> {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(5.dp)
-                            ) {
-                                MovieProgress()
-                            }
+                    DataHandler.Loading -> {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
+                        ) {
+                            MovieProgress()
                         }
+                    }
 
-                        is DataHandler.Success -> {
-                            val movieList = it.data.results
-                            movieList?.let { list ->
-                                HorizontalPagerWithImage(
-                                    movieItem = list,
-                                    onItemClick = { movieId ->
-                                        navHostController.apply {
-                                            currentBackStackEntry?.savedStateHandle?.set(
-                                                "movie_id",
-                                                movieId
-                                            )
-                                            navigate(NavigationRoute.MOVIE_DETAILS.route)
-                                        }
-                                    })
-                            }
+                    is DataHandler.Success -> {
+                        val movieList = it.data.results
+                        movieList?.let { list ->
+                            HorizontalPagerWithImage(
+                                movieItem = list,
+                                onItemClick = { movieId ->
+                                    navHostController.apply {
+                                        currentBackStackEntry?.savedStateHandle?.set(
+                                            "movie_id",
+                                            movieId
+                                        )
+                                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                                    }
+                                })
                         }
                     }
                 }
+            }
+            MoviesUiItem(upcomingMoviesResponse, "Upcoming",
+                itemClick = { movieId ->
+                    navHostController.apply {
+                        currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
+                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                    }
+                },
+                viewAllItemClick = {
+                    navHostController.apply {
+                        currentBackStackEntry?.savedStateHandle?.apply {
+                            set("title", "Upcoming Movies")
+                            set("url", Constants.URL_UPCOMING_MOVIES)
+                        }
+                        navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
+                    }
+                })
+            MoviesUiItem(popularMoviesResponse, "Popular",
+                itemClick = { movieId ->
+                    navHostController.apply {
+                        currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
+                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                    }
+                },
+                viewAllItemClick = {
+                    navHostController.apply {
+                        currentBackStackEntry?.savedStateHandle?.apply {
+                            set("title", "Popular Movies")
+                            set("url", Constants.URL_POPULAR_MOVIES)
+                        }
+                        navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
+                    }
+                })
+            MoviesUiItem(topRatedMoviesResponse, "Top Rated",
+                itemClick = { movieId ->
+                    navHostController.apply {
+                        currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
+                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                    }
+                },
+                viewAllItemClick = {
+                    navHostController.apply {
+                        currentBackStackEntry?.savedStateHandle?.apply {
+                            set("title", "Top Rated Movies")
+                            set("url", Constants.URL_TOP_RATED_MOVIES)
+                        }
+                        navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
+                    }
+                })
 
-            }
-            item {
-                MoviesUiItem(upcomingMoviesResponse, "Upcoming",
-                    itemClick = { movieId ->
-                        navHostController.apply {
-                            currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                            navigate(NavigationRoute.MOVIE_DETAILS.route)
+            MoviesUiItem(nowPlayingMoviesResponse, "Now Playing",
+                itemClick = { movieId ->
+                    navHostController.apply {
+                        currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
+                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                    }
+                },
+                viewAllItemClick = {
+                    navHostController.apply {
+                        currentBackStackEntry?.savedStateHandle?.apply {
+                            set("title", "Now Playing Movies")
+                            set("url", Constants.URL_NOW_PLAYING_MOVIES)
                         }
-                    },
-                    viewAllItemClick = {
-                        navHostController.apply {
-                            currentBackStackEntry?.savedStateHandle?.apply {
-                                set("title", "Upcoming Movies")
-                                set("url", Constants.URL_UPCOMING_MOVIES)
-                            }
-                            navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                        }
-                    })
-            }
-            item {
-                MoviesUiItem(popularMoviesResponse, "Popular",
-                    itemClick = { movieId ->
-                        navHostController.apply {
-                            currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                            navigate(NavigationRoute.MOVIE_DETAILS.route)
-                        }
-                    },
-                    viewAllItemClick = {
-                        navHostController.apply {
-                            currentBackStackEntry?.savedStateHandle?.apply {
-                                set("title", "Popular Movies")
-                                set("url", Constants.URL_POPULAR_MOVIES)
-                            }
-                            navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                        }
-                    })
-            }
-            item {
-                MoviesUiItem(topRatedMoviesResponse, "Top Rated",
-                    itemClick = { movieId ->
-                        navHostController.apply {
-                            currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                            navigate(NavigationRoute.MOVIE_DETAILS.route)
-                        }
-                    },
-                    viewAllItemClick = {
-                        navHostController.apply {
-                            currentBackStackEntry?.savedStateHandle?.apply {
-                                set("title", "Top Rated Movies")
-                                set("url", Constants.URL_TOP_RATED_MOVIES)
-                            }
-                            navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                        }
-                    })
-            }
-
-            item {
-                MoviesUiItem(nowPlayingMoviesResponse, "Now Playing",
-                    itemClick = { movieId ->
-                        navHostController.apply {
-                            currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                            navigate(NavigationRoute.MOVIE_DETAILS.route)
-                        }
-                    },
-                    viewAllItemClick = {
-                        navHostController.apply {
-                            currentBackStackEntry?.savedStateHandle?.apply {
-                                set("title", "Now Playing Movies")
-                                set("url", Constants.URL_NOW_PLAYING_MOVIES)
-                            }
-                            navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                        }
-                    })
-            }
-        })
+                        navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
+                    }
+                })
+        }
     }
 }
 

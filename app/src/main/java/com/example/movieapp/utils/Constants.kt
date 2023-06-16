@@ -14,9 +14,13 @@ object Constants {
     const val URL_UPCOMING_MOVIES: String = "movie/upcoming"
     const val URL_TRENDING_MOVIES: String = "trending/movie/day"
     var URL_MOVIE_DETAILS: String = "movie/%1\$s"
+    var URL_TV_DETAILS: String = "tv/%1\$s"
     var URL_SIMILAR_MOVIES: String = "movie/%1\$s/similar"
+    var URL_SIMILAR_TV: String = "tv/%1\$s/similar"
     var URL_CREDITS_MOVIES: String = "movie/%1\$s/credits"
+    var URL_CREDITS_TV: String = "tv/%1\$s/credits"
     var URL_MOVIE_IMAGES: String = "movie/%1\$s/images"
+    var URL_TV_IMAGES: String = "tv/%1\$s/images"
 
     //    Person
     const val URL_UPCOMING_PERSON: String = "person/popular"

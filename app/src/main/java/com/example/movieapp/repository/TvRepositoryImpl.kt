@@ -2,9 +2,6 @@ package com.example.movieapp.repository
 
 import androidx.paging.PagingData
 import com.example.movieapp.network.ApiInterface
-import com.example.movieapp.network.model.CreditResponse
-import com.example.movieapp.network.model.MovieDetailsResponse
-import com.example.movieapp.network.model.MovieImagesResponse
 import com.example.movieapp.network.model.MovieItem
 import com.example.movieapp.network.model.PersonDetailResponse
 import com.example.movieapp.network.model.PersonImagesResponse
@@ -12,6 +9,7 @@ import com.example.movieapp.network.model.TvShowsResponse
 import com.example.movieapp.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.internal.format
 import javax.inject.Inject
 
 class TvRepositoryImpl @Inject constructor(private val apiInterface: ApiInterface) : TvRepository {
@@ -33,34 +31,30 @@ class TvRepositoryImpl @Inject constructor(private val apiInterface: ApiInterfac
 
 
     override fun getAllTvShows(url: String): Flow<PagingData<MovieItem>> {
-        TODO("Not yet implemented")
+        TODO()
     }
 
     override fun getPersonTvShows(personId: String): Flow<TvShowsResponse> {
-        TODO("Not yet implemented")
+        TODO()
     }
 
-    override fun getSimilarTvShows(movieId: String): Flow<TvShowsResponse> {
-        TODO("Not yet implemented")
-    }
+    override fun getSimilarTvShows(movieId: String) =
+        flow { emit(apiInterface.getTvShows(format(Constants.URL_SIMILAR_TV, movieId), pageNo = 1)) }
 
-    override fun getTvShowDetails(movieId: String): Flow<MovieDetailsResponse> {
-        TODO("Not yet implemented")
-    }
+    override fun getTvShowDetails(movieId: String) =
+        flow { emit(apiInterface.getTvShowDetails(format(Constants.URL_TV_DETAILS, movieId))) }
 
-    override fun getTvShowImages(movieId: String): Flow<MovieImagesResponse> {
-        TODO("Not yet implemented")
-    }
+    override fun getTvShowImages(movieId: String) =
+        flow { emit(apiInterface.getMoviesImages(format(Constants.URL_TV_IMAGES, movieId))) }
 
     override fun getPersonImages(movieId: String): Flow<PersonImagesResponse> {
-        TODO("Not yet implemented")
+        TODO()
     }
 
-    override fun getMovieCredits(movieId: String): Flow<CreditResponse> {
-        TODO("Not yet implemented")
-    }
+    override fun getTvCredits(movieId: String) =
+        flow { emit(apiInterface.getMovieCredits(format(Constants.URL_CREDITS_TV, movieId))) }
 
     override fun getPersonDetails(personId: String): Flow<PersonDetailResponse> {
-        TODO("Not yet implemented")
+        TODO()
     }
 }

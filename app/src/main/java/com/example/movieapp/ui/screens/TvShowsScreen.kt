@@ -21,7 +21,6 @@ import com.example.movieapp.NavigationRoute
 import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.TvShowHorizontalPagerWithImage
 import com.example.movieapp.ui.components.TvShowUiItem
-import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.TvViewModel
 
 @Composable
@@ -41,7 +40,6 @@ fun TvShowsScreen(viewModel: TvViewModel = hiltViewModel(), navHostController: N
     val topRatedTvShows = viewModel.topRatedTvShows.collectAsState()
 
     Surface {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -69,73 +67,47 @@ fun TvShowsScreen(viewModel: TvViewModel = hiltViewModel(), navHostController: N
                     }
                 }
             }
-            TvShowUiItem(onTheAirTvShowsResponse, "On The Air",
+            TvShowUiItem(
+                onTheAirTvShowsResponse, "On The Air",
                 itemClick = { movieId ->
                     navHostController.apply {
                         currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                        navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
                     }
                 },
-                viewAllItemClick = {
-                    navHostController.apply {
-                        currentBackStackEntry?.savedStateHandle?.apply {
-                            set("title", "Upcoming Movies")
-                            set("url", Constants.URL_UPCOMING_MOVIES)
-                        }
-                        navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                    }
-                })
+                viewAllItemClick = {}, toShowViewAll = false
+            )
 
-            TvShowUiItem(airingTodayTvShowsResponse, "Airing Today",
+            TvShowUiItem(
+                airingTodayTvShowsResponse, "Airing Today",
                 itemClick = { movieId ->
                     navHostController.apply {
                         currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                        navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
                     }
                 },
-                viewAllItemClick = {
-                    navHostController.apply {
-                        currentBackStackEntry?.savedStateHandle?.apply {
-                            set("title", "Upcoming Movies")
-                            set("url", Constants.URL_UPCOMING_MOVIES)
-                        }
-                        navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                    }
-                })
-            TvShowUiItem(popularTvShowsResponse, "Popular",
+                viewAllItemClick = {}, toShowViewAll = false
+            )
+            TvShowUiItem(
+                popularTvShowsResponse, "Popular",
                 itemClick = { movieId ->
                     navHostController.apply {
                         currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                        navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
                     }
                 },
-                viewAllItemClick = {
-                    navHostController.apply {
-                        currentBackStackEntry?.savedStateHandle?.apply {
-                            set("title", "Upcoming Movies")
-                            set("url", Constants.URL_UPCOMING_MOVIES)
-                        }
-                        navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                    }
-                })
-            TvShowUiItem(topRatedTvShows, "Top Rated",
+                viewAllItemClick = {}, toShowViewAll = false
+            )
+            TvShowUiItem(
+                topRatedTvShows, "Top Rated",
                 itemClick = { movieId ->
                     navHostController.apply {
                         currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                        navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
                     }
                 },
-                viewAllItemClick = {
-                    navHostController.apply {
-                        currentBackStackEntry?.savedStateHandle?.apply {
-                            set("title", "Upcoming Movies")
-                            set("url", Constants.URL_UPCOMING_MOVIES)
-                        }
-                        navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                    }
-                })
+                viewAllItemClick = {}, toShowViewAll = false
+            )
         }
     }
-
-
 }

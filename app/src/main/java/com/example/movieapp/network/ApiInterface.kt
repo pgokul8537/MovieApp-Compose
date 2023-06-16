@@ -47,4 +47,7 @@ interface ApiInterface {
     suspend fun getMultiSearchData(
         @Url url: String, @Query("page") pageNo: Int, @Query("query") query: String
     ): SearchResponse
+
+    @GET
+    suspend fun getTvShowDetails(@Url url: String): TvShowDetailsResponse
 }

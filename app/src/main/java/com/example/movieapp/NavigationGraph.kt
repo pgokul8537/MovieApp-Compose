@@ -14,6 +14,7 @@ import com.example.movieapp.ui.screens.MovieViewAllScreen
 import com.example.movieapp.ui.screens.MoviesScreen
 import com.example.movieapp.ui.screens.PersonDetailsScreen
 import com.example.movieapp.ui.screens.SearchScreen
+import com.example.movieapp.ui.screens.TVDetailsScreen
 import com.example.movieapp.ui.screens.TvShowsScreen
 
 @Composable
@@ -66,6 +67,19 @@ fun NavigationGraph(navController: NavHostController) {
             val movieId =
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("movie_id")
             MovieDetailsScreen(movieId = movieId, navHostController = navController)
+        }
+        composable(NavigationRoute.TV_SHOWS_DETAILS.route, enterTransition = {
+            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
+        }, exitTransition = {
+            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
+        }, popEnterTransition = {
+            slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(900))
+        }, popExitTransition = {
+            slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(900))
+        }) {
+            val movieId =
+                navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("movie_id")
+            TVDetailsScreen(movieId = movieId, navHostController = navController)
         }
         composable(NavigationRoute.MOVIES_VIEW_ALL.route, enterTransition = {
             slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))

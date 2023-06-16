@@ -48,7 +48,6 @@ import coil.compose.AsyncImage
 import com.example.movieapp.DataHandler
 import com.example.movieapp.NavigationRoute
 import com.example.movieapp.network.model.ImageItem
-import com.example.movieapp.network.model.MovieDetailsResponse
 import com.example.movieapp.ui.components.CreditsUIItem
 import com.example.movieapp.ui.components.DetailScreenTopBar
 import com.example.movieapp.ui.components.MovieDetailsTopItem
@@ -111,7 +110,7 @@ fun MovieDetailsScreen(
                         is DataHandler.Success -> {
                             it.data.backdrops?.let { images ->
                                 Scaffold(topBar = {
-                                    DetailScreenAppBar(isCollapsed, images, movieResponse)
+                                    DetailScreenAppBar(isCollapsed, images, movieResponse.title)
                                 }) {
                                     Column(
                                         modifier = Modifier
@@ -205,8 +204,7 @@ fun MovieDetailsScreen(
                                         movieResponse.overview?.let { overview ->
                                             Text(
                                                 modifier = Modifier.padding(
-                                                    start = 16.dp,
-                                                    end = 16.dp
+                                                    start = 16.dp, end = 16.dp
                                                 ),
                                                 text = overview,
                                                 fontSize = 16.sp,
@@ -215,8 +213,7 @@ fun MovieDetailsScreen(
                                             )
                                         }
                                         Spacer(modifier = Modifier.size(10.dp))
-                                        CreditsUIItem(
-                                            creditResponse,
+                                        CreditsUIItem(creditResponse,
                                             "Cast",
                                             itemClick = { movieId ->
                                                 navHostController.apply {
@@ -270,12 +267,10 @@ fun MovieDetailsScreen(
 
 @Composable
 fun DetailScreenAppBar(
-    isCollapsed: Boolean,
-    images: List<ImageItem>,
-    movieResponse: MovieDetailsResponse
+    isCollapsed: Boolean, images: List<ImageItem>, title: String?
 ) {
     AnimatedVisibility(visible = !isCollapsed) {
-        MovieDetailsTopItem(imageList = images, movieResponse)
+        MovieDetailsTopItem(imageList = images, title)
     }
     val iconColor: Color by animateColorAsState(
         if (isCollapsed) {

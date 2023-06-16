@@ -1,8 +1,8 @@
 package com.example.movieapp.repository
 
 import androidx.paging.PagingData
+import com.example.movieapp.network.TvShowDetailsResponse
 import com.example.movieapp.network.model.CreditResponse
-import com.example.movieapp.network.model.MovieDetailsResponse
 import com.example.movieapp.network.model.MovieImagesResponse
 import com.example.movieapp.network.model.MovieItem
 import com.example.movieapp.network.model.PersonDetailResponse
@@ -19,10 +19,10 @@ interface TvRepository {
     fun getAllTvShows(url: String): Flow<PagingData<MovieItem>>
     fun getPersonTvShows(personId: String): Flow<TvShowsResponse>
     fun getSimilarTvShows(movieId: String): Flow<TvShowsResponse>
-    fun getTvShowDetails(movieId: String): Flow<MovieDetailsResponse>
+    fun getTvShowDetails(movieId: String): Flow<TvShowDetailsResponse>
     fun getTvShowImages(movieId: String): Flow<MovieImagesResponse>
     fun getPersonImages(movieId: String): Flow<PersonImagesResponse>
-    fun getMovieCredits(movieId: String): Flow<CreditResponse>
+    fun getTvCredits(movieId: String): Flow<CreditResponse>
     fun getPersonDetails(personId: String): Flow<PersonDetailResponse>
 
 }

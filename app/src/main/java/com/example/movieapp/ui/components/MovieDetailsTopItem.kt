@@ -22,13 +22,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.movieapp.network.model.ImageItem
-import com.example.movieapp.network.model.MovieDetailsResponse
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MovieDetailsTopItem(
     imageList: List<ImageItem>,
-    movieDetailsResponse: MovieDetailsResponse? = null, size: Size = Size(300, 500)
+    title: String? = null, size: Size = Size(300, 500)
 ) {
     val pageState =
         rememberPagerState { imageList.size }
@@ -58,7 +57,7 @@ fun MovieDetailsTopItem(
                         )
                     ), verticalArrangement = Arrangement.Bottom
             ) {
-                movieDetailsResponse?.title?.let {
+                title?.let {
                     Text(
                         modifier = Modifier.padding(16.dp),
                         text = it,
