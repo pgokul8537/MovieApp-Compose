@@ -7,16 +7,18 @@ import com.example.movieapp.network.model.MovieResponse
 import com.example.movieapp.network.model.PersonDetailResponse
 import com.example.movieapp.network.model.PersonImagesResponse
 import com.example.movieapp.network.model.SearchResponse
+import com.example.movieapp.network.model.TvShowsResponse
 import com.example.movieapp.utils.Constants
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface ApiInterface {
-
-
     @GET
     suspend fun getMovies(@Url url: String, @Query("page") pageNo: Int): MovieResponse
+
+    @GET
+    suspend fun getTvShows(@Url url: String, @Query("page") pageNo: Int): TvShowsResponse
 
     @GET
     suspend fun getMoviesImages(@Url url: String): MovieImagesResponse

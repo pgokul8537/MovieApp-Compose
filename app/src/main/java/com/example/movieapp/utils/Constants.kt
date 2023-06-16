@@ -41,7 +41,7 @@ object Constants {
     const val URL_AIRING_TODAY_TV: String = "tv/airing_today"
     const val URL_ON_THE_AIR_TV: String = "tv/on_the_air"
     const val URL_TOP_RATED_TV: String = "tv/top_rated"
-    const val URL_NOW_PLAYING_TV: String = "tv/popular"
+    const val URL_POPULAR_TV: String = "tv/popular"
     const val URL_TRENDING_TV: String = "trending/tv/day"
 
 

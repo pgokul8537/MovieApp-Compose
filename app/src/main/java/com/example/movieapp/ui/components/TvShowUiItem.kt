@@ -27,11 +27,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movieapp.DataHandler
-import com.example.movieapp.network.model.MovieResponse
+import com.example.movieapp.network.model.TvShowsResponse
 
 @Composable
-fun MoviesUiItem(
-    popularMoviesResponse: State<DataHandler<MovieResponse>>,
+fun TvShowUiItem(
+    popularMoviesResponse: State<DataHandler<TvShowsResponse>>,
     title: String,
     itemClick: (movieId: Int?) -> Unit,
     viewAllItemClick: () -> Unit, toShowViewAll: Boolean = true
@@ -107,9 +107,9 @@ fun MoviesUiItem(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             content = {
                                 items(resposne.results) { item ->
-                                    MovieListItem(item, onItemClick = { movieId ->
+                                    TvShowListItem(item) { movieId ->
                                         itemClick.invoke(movieId)
-                                    })
+                                    }
                                 }
                             }
                         )

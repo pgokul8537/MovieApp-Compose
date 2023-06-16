@@ -3,7 +3,6 @@ package com.example.movieapp
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,7 +15,6 @@ import com.example.movieapp.ui.screens.MoviesScreen
 import com.example.movieapp.ui.screens.PersonDetailsScreen
 import com.example.movieapp.ui.screens.SearchScreen
 import com.example.movieapp.ui.screens.TvShowsScreen
-import com.example.movieapp.viewmodel.MovieViewModel
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
@@ -32,8 +30,7 @@ fun NavigationGraph(navController: NavHostController) {
         }, popExitTransition = {
             slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down, tween(900))
         }) {
-            val viewModel = hiltViewModel<MovieViewModel>()
-            MoviesScreen(viewModel, navController)
+            MoviesScreen(navHostController = navController)
         }
         composable(NavigationRoute.TV_SHOWS.route, enterTransition = {
             slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up, tween(700))
@@ -44,7 +41,7 @@ fun NavigationGraph(navController: NavHostController) {
         }, popExitTransition = {
             slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down, tween(900))
         }) {
-            TvShowsScreen()
+            TvShowsScreen(navHostController = navController)
         }
         composable(NavigationRoute.EXPLORE.route, enterTransition = {
             slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up, tween(700))

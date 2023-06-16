@@ -74,7 +74,7 @@ fun MovieDetailsScreen(
     })
     val movieDetailsResponse = viewModel.moviesDetailsResponse.collectAsState()
     val creditResponse = viewModel.creditResponse.collectAsState()
-    val similarMoviesResponse = viewModel.similarMoviesResponse.value
+    val similarMoviesResponse = viewModel.similarMoviesResponse.collectAsState()
     val scrollState = rememberScrollState()
     println("scroll state" + scrollState.isScrollInProgress)
     val isCollapsed by remember {

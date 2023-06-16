@@ -64,7 +64,7 @@ fun PersonDetailsScreen(
     })
     val personDetailResponse = viewModel.personDetailResponse.collectAsState()
     val personImagesResponse = viewModel.personImagesResponse.collectAsState()
-    val personMoviesResponse = viewModel.personMoviesResponse.value
+    val personMoviesResponse = viewModel.personMoviesResponse.collectAsState()
     Surface {
         Column(
             modifier = Modifier

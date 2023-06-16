@@ -1,7 +1,5 @@
 package com.example.movieapp.viewmodel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -23,28 +21,27 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieViewModel @Inject constructor(private val movieRepository: MovieRepository) :
     ViewModel() {
-    var popularMoviesResponse: MutableState<DataHandler<MovieResponse>> =
-        mutableStateOf(DataHandler.Loading)
-    var nowPlayingMoviesResponse: MutableState<DataHandler<MovieResponse>> =
-        mutableStateOf(DataHandler.Loading)
-    var upcomingMoviesResponse: MutableState<DataHandler<MovieResponse>> =
-        mutableStateOf(DataHandler.Loading)
-
-    var topRatedMoviesResponse: MutableState<DataHandler<MovieResponse>> =
-        mutableStateOf(DataHandler.Loading)
-    var similarMoviesResponse: MutableState<DataHandler<MovieResponse>> =
-        mutableStateOf(DataHandler.Loading)
-    var personMoviesResponse: MutableState<DataHandler<MovieResponse>> =
-        mutableStateOf(DataHandler.Loading)
-
-    /*private val _personMoviesResponse =
+    private val _popularMoviesResponse =
         MutableStateFlow<DataHandler<MovieResponse>>(DataHandler.Loading)
-    val personMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _personMoviesResponse*/
-
+    val popularMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _popularMoviesResponse
+    private val _nowPlayingMoviesResponse =
+        MutableStateFlow<DataHandler<MovieResponse>>(DataHandler.Loading)
+    val nowPlayingMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _nowPlayingMoviesResponse
+    private val _upcomingMoviesResponse =
+        MutableStateFlow<DataHandler<MovieResponse>>(DataHandler.Loading)
+    val upcomingMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _upcomingMoviesResponse
+    private val _topRatedMoviesResponse =
+        MutableStateFlow<DataHandler<MovieResponse>>(DataHandler.Loading)
+    val topRatedMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _topRatedMoviesResponse
+    private val _similarMoviesResponse =
+        MutableStateFlow<DataHandler<MovieResponse>>(DataHandler.Loading)
+    val similarMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _similarMoviesResponse
+    private val _personMoviesResponse =
+        MutableStateFlow<DataHandler<MovieResponse>>(DataHandler.Loading)
+    val personMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _personMoviesResponse
     private val _trendingMoviesResponse =
         MutableStateFlow<DataHandler<MovieResponse>>(DataHandler.Loading)
     val trendingMoviesResponse: StateFlow<DataHandler<MovieResponse>> = _trendingMoviesResponse
-
     private val _moviesDetailsResponse =
         MutableStateFlow<DataHandler<MovieDetailsResponse>>(DataHandler.Loading)
     val moviesDetailsResponse: StateFlow<DataHandler<MovieDetailsResponse>> = _moviesDetailsResponse
@@ -70,7 +67,7 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
                 .catch { exception ->
 
                 }.collect { movies ->
-                    popularMoviesResponse.value = DataHandler.Success(movies)
+                    _popularMoviesResponse.value = DataHandler.Success(movies)
                 }
         }
     }
@@ -81,7 +78,7 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
                 .catch { exception ->
 
                 }.collect { movies ->
-                    nowPlayingMoviesResponse.value = DataHandler.Success(movies)
+                    _nowPlayingMoviesResponse.value = DataHandler.Success(movies)
                 }
         }
     }
@@ -92,7 +89,7 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
                 .catch { exception ->
 
                 }.collect { movies ->
-                    upcomingMoviesResponse.value = DataHandler.Success(movies)
+                    _upcomingMoviesResponse.value = DataHandler.Success(movies)
                 }
         }
     }
@@ -114,7 +111,7 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
                 .catch { exception ->
 
                 }.collect { movies ->
-                    topRatedMoviesResponse.value = DataHandler.Success(movies)
+                    _topRatedMoviesResponse.value = DataHandler.Success(movies)
                 }
         }
     }
@@ -180,7 +177,7 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
                 .catch { exception ->
 
                 }.collect { movies ->
-                    similarMoviesResponse.value = DataHandler.Success(movies)
+                    _similarMoviesResponse.value = DataHandler.Success(movies)
                 }
         }
     }
@@ -191,7 +188,7 @@ class MovieViewModel @Inject constructor(private val movieRepository: MovieRepos
                 .catch { exception ->
 
                 }.collect { movies ->
-                    personMoviesResponse.value = DataHandler.Success(movies)
+                    _personMoviesResponse.value = DataHandler.Success(movies)
                 }
         }
     }

@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.movieapp.DataHandler
 import com.example.movieapp.NavigationRoute
@@ -30,7 +31,10 @@ import com.example.movieapp.viewmodel.MovieViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController) {
+fun MoviesScreen(
+    viewModel: MovieViewModel = hiltViewModel(),
+    navHostController: NavHostController
+) {
     val systemUiController = rememberSystemUiController()
     SideEffect {
         systemUiController.setStatusBarColor(
@@ -46,10 +50,10 @@ fun MoviesScreen(viewModel: MovieViewModel, navHostController: NavHostController
         viewModel.getTrendingMovies()
 
     })
-    val popularMoviesResponse = viewModel.popularMoviesResponse.value
-    val topRatedMoviesResponse = viewModel.topRatedMoviesResponse.value
-    val upcomingMoviesResponse = viewModel.upcomingMoviesResponse.value
-    val nowPlayingMoviesResponse = viewModel.nowPlayingMoviesResponse.value
+    val popularMoviesResponse = viewModel.popularMoviesResponse.collectAsState()
+    val topRatedMoviesResponse = viewModel.topRatedMoviesResponse.collectAsState()
+    val upcomingMoviesResponse = viewModel.upcomingMoviesResponse.collectAsState()
+    val nowPlayingMoviesResponse = viewModel.nowPlayingMoviesResponse.collectAsState()
     val trendingMoviesResponse = viewModel.trendingMoviesResponse.collectAsState()
     Surface(modifier = Modifier.fillMaxSize()) {
         val contentPadding = WindowInsets.navigationBars.add(
