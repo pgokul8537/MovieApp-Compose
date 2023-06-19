@@ -1,5 +1,9 @@
 package com.example.movieapp.ui.screens
 
+import android.content.Context
+import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -67,47 +72,45 @@ fun TvShowsScreen(viewModel: TvViewModel = hiltViewModel(), navHostController: N
                     }
                 }
             }
-            TvShowUiItem(
-                onTheAirTvShowsResponse, "On The Air",
-                itemClick = { movieId ->
-                    navHostController.apply {
-                        currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                        navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
-                    }
-                },
-                viewAllItemClick = {}, toShowViewAll = false
+            TvShowUiItem(onTheAirTvShowsResponse, "On The Air", itemClick = { movieId ->
+                navHostController.apply {
+                    currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
+                    navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
+                }
+            }, viewAllItemClick = {}, toShowViewAll = false
             )
 
-            TvShowUiItem(
-                airingTodayTvShowsResponse, "Airing Today",
-                itemClick = { movieId ->
-                    navHostController.apply {
-                        currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                        navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
-                    }
-                },
-                viewAllItemClick = {}, toShowViewAll = false
+            TvShowUiItem(airingTodayTvShowsResponse, "Airing Today", itemClick = { movieId ->
+                navHostController.apply {
+                    currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
+                    navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
+                }
+            }, viewAllItemClick = {}, toShowViewAll = false
             )
-            TvShowUiItem(
-                popularTvShowsResponse, "Popular",
-                itemClick = { movieId ->
-                    navHostController.apply {
-                        currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                        navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
-                    }
-                },
-                viewAllItemClick = {}, toShowViewAll = false
+            TvShowUiItem(popularTvShowsResponse, "Popular", itemClick = { movieId ->
+                navHostController.apply {
+                    currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
+                    navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
+                }
+            }, viewAllItemClick = {}, toShowViewAll = false
             )
-            TvShowUiItem(
-                topRatedTvShows, "Top Rated",
-                itemClick = { movieId ->
-                    navHostController.apply {
-                        currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                        navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
-                    }
-                },
-                viewAllItemClick = {}, toShowViewAll = false
+            TvShowUiItem(topRatedTvShows, "Top Rated", itemClick = { movieId ->
+                navHostController.apply {
+                    currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
+                    navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
+                }
+            }, viewAllItemClick = {}, toShowViewAll = false
             )
         }
     }
+    val context = LocalContext.current
+    BackHandler {
+        context.findActivity()?.finish()
+    }
+}
+
+fun Context.findActivity(): ComponentActivity? = when (this) {
+    is ComponentActivity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
