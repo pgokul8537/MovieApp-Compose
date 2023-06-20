@@ -18,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +30,7 @@ import com.example.movieapp.network.model.MovieResponse
 
 @Composable
 fun MoviesUiItem(
-    popularMoviesResponse: State<DataHandler<MovieResponse>>,
+    popularMoviesResponse: DataHandler<MovieResponse>,
     title: String,
     itemClick: (movieId: Int?) -> Unit,
     viewAllItemClick: () -> Unit, toShowViewAll: Boolean = true
@@ -75,8 +74,7 @@ fun MoviesUiItem(
                 }
             }
         }
-        popularMoviesResponse.value.let {
-            when (it) {
+            when (popularMoviesResponse) {
                 is DataHandler.Failure -> {
                 }
 
@@ -100,7 +98,7 @@ fun MoviesUiItem(
                             bottom = 16.dp
                         )
                     ).asPaddingValues()
-                    val resposne = it.data
+                    val resposne = popularMoviesResponse.data
                     if (!resposne.results.isNullOrEmpty()) {
                         LazyRow(
                             contentPadding = contentPadding,
@@ -115,7 +113,6 @@ fun MoviesUiItem(
                         )
                     }
                 }
-            }
         }
     }
 }

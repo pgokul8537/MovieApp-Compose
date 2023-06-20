@@ -175,8 +175,7 @@ fun PersonDetailsScreen(
                                                 bottom = 16.dp
                                             )
                                         ).asPaddingValues()
-                                        LazyRow(
-                                            contentPadding = contentPadding,
+                                        LazyRow(contentPadding = contentPadding,
                                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                                             content = {
                                                 items(count = imagesList.size) {
@@ -194,37 +193,31 @@ fun PersonDetailsScreen(
                                                         )
                                                     }
                                                 }
-                                            }
-                                        )
+                                            })
                                     }
                                 }
                             }
                         }
 
                         Spacer(modifier = Modifier.size(10.dp))
-                        MoviesUiItem(
-                            personMoviesResponse, "Movies",
-                            itemClick = { movieId ->
-                                navHostController.apply {
-                                    currentBackStackEntry?.savedStateHandle?.set(
-                                        "movie_id",
-                                        movieId
+                        MoviesUiItem(personMoviesResponse.value, "Movies", itemClick = { movieId ->
+                            navHostController.apply {
+                                currentBackStackEntry?.savedStateHandle?.set(
+                                    "movie_id", movieId
+                                )
+                                navigate(NavigationRoute.MOVIE_DETAILS.route)
+                            }
+                        }, viewAllItemClick = {
+                            navHostController.apply {
+                                currentBackStackEntry?.savedStateHandle?.apply {
+                                    set("title", "Upcoming Movies")
+                                    set(
+                                        "url", Constants.URL_UPCOMING_MOVIES
                                     )
-                                    navigate(NavigationRoute.MOVIE_DETAILS.route)
                                 }
-                            },
-                            viewAllItemClick = {
-                                navHostController.apply {
-                                    currentBackStackEntry?.savedStateHandle?.apply {
-                                        set("title", "Upcoming Movies")
-                                        set(
-                                            "url",
-                                            Constants.URL_UPCOMING_MOVIES
-                                        )
-                                    }
-                                    navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                                }
-                            }, toShowViewAll = false
+                                navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
+                            }
+                        }, toShowViewAll = false
                         )
                         Spacer(modifier = Modifier.size(10.dp))
                     }

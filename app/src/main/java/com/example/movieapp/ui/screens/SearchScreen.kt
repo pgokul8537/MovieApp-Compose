@@ -17,18 +17,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -42,7 +39,6 @@ import com.example.movieapp.viewmodel.SearchType
 import com.example.movieapp.viewmodel.SearchViewModel
 import com.google.gson.Gson
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     url: String,
@@ -60,18 +56,16 @@ fun SearchScreen(
             .padding(16.dp)
     ) {
 
-        TextField(
-            value = searchText,
+        TextField(value = searchText,
             onValueChange = viewModel::onSearchTextChange,
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(text = "Search") }, leadingIcon = {
-                Icon(
-                    Icons.Default.ArrowBack,
+            placeholder = { Text(text = "Search") },
+            leadingIcon = {
+                Icon(Icons.Default.ArrowBack,
                     contentDescription = "",
                     modifier = Modifier.clickable {
                         navHostController.popBackStack()
-                    }
-                )
+                    })
             },
             trailingIcon = {
                 if (searchText.isNotEmpty()) {
@@ -86,13 +80,6 @@ fun SearchScreen(
             },
             singleLine = true,
             shape = RoundedCornerShape(5.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Color.White,
-                cursorColor = Color.White,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            ),
             keyboardActions = KeyboardActions(onSearch = {
                 focusManager.clearFocus()
                 viewModel.getSearchData(url)

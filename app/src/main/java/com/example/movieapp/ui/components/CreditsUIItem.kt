@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +29,7 @@ import com.example.movieapp.network.model.CreditResponse
 
 @Composable
 fun CreditsUIItem(
-    creditResponse: State<DataHandler<CreditResponse>>,
+    creditResponse: DataHandler<CreditResponse>,
     title: String,
     itemClick: (movieId: Int?) -> Unit,
     viewAllItemClick: (response: CreditResponse) -> Unit
@@ -40,86 +39,80 @@ fun CreditsUIItem(
             .fillMaxSize()
             .padding(top = 15.dp)
     ) {
-        creditResponse.value.let { result ->
 
-            when (result) {
-                is DataHandler.Failure -> {
+        when (creditResponse) {
+            is DataHandler.Failure -> {
+            }
+
+            DataHandler.Loading -> {
+
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)
+                ) {
+                    MovieProgress()
                 }
+            }
 
-                DataHandler.Loading -> {
-
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(5.dp)
-                    ) {
-                        MovieProgress()
-                    }
-                }
-
-                is DataHandler.Success -> {
-                    val response = result.data
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, top = 10.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+            is DataHandler.Success -> {
+                val response = creditResponse.data
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, top = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = title,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        textAlign = TextAlign.Start,
+                        fontSize = 20.sp
+                    )
+                    Surface(
+                        modifier = Modifier,
+                        shape = CircleShape,
+                        color = Color.Red.copy(alpha = 0.5f)
                     ) {
                         Text(
-                            text = title,
-                            fontWeight = FontWeight.Bold,
+                            text = "View All",
+                            fontWeight = FontWeight.SemiBold,
                             color = Color.White,
+                            modifier = Modifier
+                                .padding(
+                                    top = 5.dp, bottom = 5.dp, start = 10.dp, end = 10.dp
+                                )
+                                .clickable {
+                                    viewAllItemClick.invoke(response)
+                                },
                             textAlign = TextAlign.Start,
-                            fontSize = 20.sp
+                            fontSize = 16.sp
                         )
-                        Surface(
-                            modifier = Modifier,
-                            shape = CircleShape,
-                            color = Color.Red.copy(alpha = 0.5f)
-                        ) {
-                            Text(
-                                text = "View All",
-                                fontWeight = FontWeight.SemiBold,
-                                color = Color.White,
-                                modifier = Modifier
-                                    .padding(top = 5.dp, bottom = 5.dp, start = 10.dp, end = 10.dp)
-                                    .clickable {
-                                        viewAllItemClick.invoke(response)
-                                    },
-                                textAlign = TextAlign.Start,
-                                fontSize = 16.sp
-                            )
-                        }
-
                     }
-                    val contentPadding = WindowInsets.navigationBars.add(
-                        WindowInsets(
-                            left = 16.dp,
-                            right = 16.dp,
-                            top = 16.dp,
-                            bottom = 16.dp
-                        )
-                    ).asPaddingValues()
-                    if (!result.data.cast.isNullOrEmpty()) {
-                        LazyRow(
-                            contentPadding = contentPadding,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            content = {
-                                items(count = result.data.cast.size) {
-                                    val item = result.data.cast[it]
-                                    if (item != null) {
-                                        CastListItem(item) { movieId ->
-                                            itemClick.invoke(movieId)
-                                        }
+
+                }
+                val contentPadding = WindowInsets.navigationBars.add(
+                    WindowInsets(
+                        left = 16.dp, right = 16.dp, top = 16.dp, bottom = 16.dp
+                    )
+                ).asPaddingValues()
+                if (!creditResponse.data.cast.isNullOrEmpty()) {
+                    LazyRow(contentPadding = contentPadding,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        content = {
+                            items(count = creditResponse.data.cast.size) {
+                                val item = creditResponse.data.cast[it]
+                                if (item != null) {
+                                    CastListItem(item) { movieId ->
+                                        itemClick.invoke(movieId)
                                     }
                                 }
                             }
-                        )
-                    }
+                        })
                 }
             }
         }
-
     }
 }

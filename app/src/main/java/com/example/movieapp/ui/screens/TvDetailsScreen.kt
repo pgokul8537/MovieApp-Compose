@@ -200,7 +200,7 @@ fun TVDetailsScreen(
                                             )
                                         }
                                         Spacer(modifier = Modifier.size(10.dp))
-                                        CreditsUIItem(creditResponse,
+                                        CreditsUIItem(creditResponse.value,
                                             "Cast",
                                             itemClick = { movieId ->
                                                 navHostController.apply {
@@ -209,15 +209,15 @@ fun TVDetailsScreen(
                                                     )
                                                     navigate(NavigationRoute.PERSON_DETAILS.route)
                                                 }
-                                            },
-                                            viewAllItemClick = {
-                                                navHostController.apply {
-                                                    currentBackStackEntry?.savedStateHandle?.set(
-                                                        "credit_response", it
-                                                    )
-                                                    navigate(NavigationRoute.CREDITS_VIEW_ALL.route)
-                                                }
-                                            })
+                                            }
+                                        ) {
+                                            navHostController.apply {
+                                                currentBackStackEntry?.savedStateHandle?.set(
+                                                    "credit_response", it
+                                                )
+                                                navigate(NavigationRoute.CREDITS_VIEW_ALL.route)
+                                            }
+                                        }
                                         Spacer(modifier = Modifier.size(10.dp))
                                         TvShowUiItem(similarMoviesResponse,
                                             "Similar Movies",

@@ -63,7 +63,7 @@ fun NavigationGraph(navController: NavHostController) {
         }
 
         slideComposable(NavigationRoute.MOVIES.route) {
-            MoviesScreen(navHostController = navController)
+            MoviesScreen(onMovieClick = goToMovieDetails, onViewAllMoviesClick = goToAllMovies)
         }
         slideComposable(NavigationRoute.TV_SHOWS.route) {
             TvShowsScreen(navHostController = navController)
@@ -74,7 +74,14 @@ fun NavigationGraph(navController: NavHostController) {
         slideComposable(NavigationRoute.MOVIE_DETAILS.route) {
             val movieId =
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("movie_id")
-            MovieDetailsScreen(movieId = movieId, navHostController = navController)
+            MovieDetailsScreen(
+                movieId = movieId,
+                onBackClick = goBack,
+                onMovieClick = goToMovieDetails,
+                onViewAllMoviesClick = goToAllMovies,
+                onPersonClick = goToPersonDetails,
+                onViewAllCreditsClick = goToAllCredits
+            )
         }
         slideComposable(NavigationRoute.TV_SHOWS_DETAILS.route) {
             val movieId =
