@@ -1,6 +1,5 @@
 package com.example.movieapp.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -37,7 +36,7 @@ fun BottomNavigation(navController: NavController) {
             bottomBarState.value = true
         }
     }
-    AnimatedVisibility(visible = bottomBarState.value) {
+    if (bottomBarState.value) {
         NavigationBar(containerColor = Color.Black, tonalElevation = 16.dp) {
             bottomNavItems.forEach { item ->
                 val selected = currentDestination?.hierarchy?.any { it.route == item.route } == true
@@ -68,7 +67,6 @@ fun BottomNavigation(navController: NavController) {
                     })
             }
         }
-
     }
 
 }
