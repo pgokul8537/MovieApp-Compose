@@ -24,9 +24,6 @@ android {
         buildFeatures {
             buildConfig true
         }
-        //moviedb key
-        buildConfigField "String", "MOVIE_DB_KEY", "\"55f9ff338e4f8176cd593706b82f5011\""
-
         // base url
         buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
     }
