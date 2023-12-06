@@ -1,4 +1,4 @@
-package com.example.movieapp
+package com.example.movieapp.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,11 +13,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,51 +26,57 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.movieapp.network.model.MovieResponse
+import com.example.movieapp.DataHandler
+import com.example.movieapp.network.model.TvShowsResponse
 
 @Composable
-fun MoviesUiItem(
-    popularMoviesResponse: DataHandler<MovieResponse>,
+fun TvShowUiItem(
+    popularMoviesResponse: State<DataHandler<TvShowsResponse>>,
     title: String,
     itemClick: (movieId: Int?) -> Unit,
-    viewAllItemClick: () -> Unit
+    viewAllItemClick: () -> Unit, toShowViewAll: Boolean = true
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 15.dp)
     ) {
-        Card(
-            shape = RoundedCornerShape(0.dp),
-            elevation = CardDefaults.cardElevation(12.dp),
-            colors = CardDefaults.cardColors(Color.White)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = title,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black,
-                    textAlign = TextAlign.Start,
-                    fontSize = 20.sp
-                )
-                Text(
-                    text = "View All",
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black,
-                    modifier = Modifier.clickable {
-                        viewAllItemClick.invoke()
-                    },
-                    textAlign = TextAlign.Start,
-                    fontSize = 16.sp
-                )
+            Text(
+                text = title,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                textAlign = TextAlign.Start,
+                fontSize = 20.sp
+            )
+            if (toShowViewAll) {
+                Surface(
+                    modifier = Modifier,
+                    shape = CircleShape,
+                    color = Color.Red.copy(alpha = 0.5f)
+                ) {
+                    Text(
+                        text = "View All",
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White,
+                        modifier = Modifier
+                            .padding(top = 5.dp, bottom = 5.dp, start = 10.dp, end = 10.dp)
+                            .clickable {
+                                viewAllItemClick.invoke()
+                            },
+                        textAlign = TextAlign.Start,
+                        fontSize = 16.sp
+                    )
+                }
             }
-
-            when (popularMoviesResponse) {
+        }
+        popularMoviesResponse.value.let {
+            when (it) {
                 is DataHandler.Failure -> {
                 }
 
@@ -93,17 +100,15 @@ fun MoviesUiItem(
                             bottom = 16.dp
                         )
                     ).asPaddingValues()
-                    if (!popularMoviesResponse.data.results.isNullOrEmpty()) {
+                    val resposne = it.data
+                    if (!resposne.results.isNullOrEmpty()) {
                         LazyRow(
                             contentPadding = contentPadding,
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             content = {
-                                items(count = popularMoviesResponse.data.results.size) {
-                                    val item = popularMoviesResponse.data.results[it]
-                                    if (item != null) {
-                                        MovieListItem(item, onItemClick = { movieId ->
-                                            itemClick.invoke(movieId)
-                                        })
+                                items(resposne.results) { item ->
+                                    TvShowListItem(item) { movieId ->
+                                        itemClick.invoke(movieId)
                                     }
                                 }
                             }
