@@ -30,7 +30,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.example.movieapp.ui.components.SearchMovieListItem
 import com.example.movieapp.ui.components.SearchPersonListItem
 import com.example.movieapp.ui.components.SearchTvListItem
@@ -44,7 +43,7 @@ fun SearchScreen(
     url: String,
     searchType: String,
     viewModel: SearchViewModel = hiltViewModel(),
-    navHostController: NavHostController
+    onBackClick: () -> Unit
 ) {
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
@@ -56,7 +55,8 @@ fun SearchScreen(
             .padding(16.dp)
     ) {
 
-        TextField(value = searchText,
+        TextField(
+            value = searchText,
             onValueChange = viewModel::onSearchTextChange,
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text(text = "Search") },
@@ -64,7 +64,7 @@ fun SearchScreen(
                 Icon(Icons.Default.ArrowBack,
                     contentDescription = "",
                     modifier = Modifier.clickable {
-                        navHostController.popBackStack()
+                        onBackClick.invoke()
                     })
             },
             trailingIcon = {

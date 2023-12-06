@@ -20,16 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.example.movieapp.DataHandler
-import com.example.movieapp.NavigationRoute
 import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.TvShowHorizontalPagerWithImage
 import com.example.movieapp.ui.components.TvShowUiItem
 import com.example.movieapp.viewmodel.TvViewModel
 
 @Composable
-fun TvShowsScreen(viewModel: TvViewModel = hiltViewModel(), navHostController: NavHostController) {
+fun TvShowsScreen(viewModel: TvViewModel = hiltViewModel(), onTVClick: (tvShowId: Int) -> Unit) {
     LaunchedEffect(key1 = "") {
         viewModel.getTrendingMovies()
         viewModel.getPopularTvShows()
@@ -67,37 +65,37 @@ fun TvShowsScreen(viewModel: TvViewModel = hiltViewModel(), navHostController: N
 
                     is DataHandler.Success -> {
                         it.data.results?.let { list ->
-                            TvShowHorizontalPagerWithImage(list, onItemClick = {})
+                            TvShowHorizontalPagerWithImage(list, onItemClick = { tvShowId ->
+                                tvShowId?.let {
+                                    onTVClick(it)
+                                }
+                            })
                         }
                     }
                 }
             }
-            TvShowUiItem(onTheAirTvShowsResponse, "On The Air", itemClick = { movieId ->
-                navHostController.apply {
-                    currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                    navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
+            TvShowUiItem(onTheAirTvShowsResponse, "On The Air", itemClick = { tvShowId ->
+                tvShowId?.let {
+                    onTVClick(it)
                 }
             }, viewAllItemClick = {}, toShowViewAll = false
             )
 
-            TvShowUiItem(airingTodayTvShowsResponse, "Airing Today", itemClick = { movieId ->
-                navHostController.apply {
-                    currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                    navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
+            TvShowUiItem(airingTodayTvShowsResponse, "Airing Today", itemClick = { tvShowId ->
+                tvShowId?.let {
+                    onTVClick(it)
                 }
             }, viewAllItemClick = {}, toShowViewAll = false
             )
-            TvShowUiItem(popularTvShowsResponse, "Popular", itemClick = { movieId ->
-                navHostController.apply {
-                    currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                    navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
+            TvShowUiItem(popularTvShowsResponse, "Popular", itemClick = { tvShowId ->
+                tvShowId?.let {
+                    onTVClick(it)
                 }
             }, viewAllItemClick = {}, toShowViewAll = false
             )
-            TvShowUiItem(topRatedTvShows, "Top Rated", itemClick = { movieId ->
-                navHostController.apply {
-                    currentBackStackEntry?.savedStateHandle?.set("movie_id", movieId)
-                    navigate(NavigationRoute.TV_SHOWS_DETAILS.route)
+            TvShowUiItem(topRatedTvShows, "Top Rated", itemClick = { tvShowId ->
+                tvShowId?.let {
+                    onTVClick(it)
                 }
             }, viewAllItemClick = {}, toShowViewAll = false
             )

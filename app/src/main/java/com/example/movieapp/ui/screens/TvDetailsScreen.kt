@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,10 +38,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.movieapp.DataHandler
-import com.example.movieapp.NavigationRoute
+import com.example.movieapp.network.model.CreditResponse
 import com.example.movieapp.ui.components.CreditsUIItem
 import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.TvShowUiItem
@@ -50,12 +48,17 @@ import com.example.movieapp.ui.components.common.TextWithIcon
 import com.example.movieapp.ui.components.shimmerEffect
 import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.TvViewModel
-import com.google.gson.Gson
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TVDetailsScreen(
-    viewModel: TvViewModel = hiltViewModel(), movieId: Int?, navHostController: NavHostController
+    viewModel: TvViewModel = hiltViewModel(),
+    movieId: Int?,
+    onBackClick: () -> Unit,
+    onTVClick: (tvShowId: Int) -> Unit,
+    onViewAllMoviesClick: (title: String, url: String) -> Unit,
+    onPersonClick: (personId: Int) -> Unit,
+    onViewAllCreditsClick: (creditResponse: CreditResponse) -> Unit
 ) {
     LaunchedEffect(key1 = "", block = {
         movieId?.let { movieId ->
@@ -65,16 +68,14 @@ fun TVDetailsScreen(
             viewModel.getTvCredits(movieId)
         }
     })
-    val movieDetailsResponse = viewModel.tvShowDetailsResponse.collectAsState()
+    val tvDetailsResponse = viewModel.tvShowDetailsResponse.collectAsState()
     val creditResponse = viewModel.tvCreditsResponse.collectAsState()
-    val similarMoviesResponse = viewModel.similarTvShowsResponse.collectAsState()
+    val similarTVShowResponse = viewModel.similarTvShowsResponse.collectAsState()
     val scrollState = rememberScrollState()
-    println("scroll state" + scrollState.isScrollInProgress)
     val isCollapsed by remember {
         derivedStateOf { scrollState.value > 0 }
     }
-    println("isCollapsed" + isCollapsed)
-    movieDetailsResponse.value.let { result ->
+    tvDetailsResponse.value.let { result ->
         when (result) {
             is DataHandler.Failure -> {
             }
@@ -92,7 +93,6 @@ fun TVDetailsScreen(
 
             is DataHandler.Success -> {
                 val movieResponse = result.data
-                println(">>>>>>>>>>>>>" + Gson().toJson(movieResponse))
                 val movieImagesResponse = viewModel.tvShowImages.collectAsState()
                 movieImagesResponse.value.let {
                     when (it) {
@@ -105,7 +105,7 @@ fun TVDetailsScreen(
                         is DataHandler.Success -> {
                             it.data.backdrops?.let { images ->
                                 Scaffold(topBar = {
-                                    DetailScreenAppBar(isCollapsed, images, movieResponse.name)
+                                    DetailScreenAppBar(isCollapsed, images, movieResponse.name,onBackClick)
                                 }) {
                                     Column(
                                         modifier = Modifier
@@ -156,12 +156,6 @@ fun TVDetailsScreen(
                                                             movieResponse.voteAverage.toString()
                                                         )
                                                         Spacer(modifier = Modifier.size(10.dp))
-                                                        /*TextWithIcon(
-                                                            Modifier.padding(top = 10.dp),
-                                                            Icons.Filled.DateRange,
-                                                            Color.Red,
-                                                            movieResponse.releaseDate.toString()
-                                                        )*/
                                                     }
                                                 }
 
@@ -202,43 +196,27 @@ fun TVDetailsScreen(
                                         Spacer(modifier = Modifier.size(10.dp))
                                         CreditsUIItem(creditResponse.value,
                                             "Cast",
-                                            itemClick = { movieId ->
-                                                navHostController.apply {
-                                                    currentBackStackEntry?.savedStateHandle?.set(
-                                                        "movie_id", movieId
-                                                    )
-                                                    navigate(NavigationRoute.PERSON_DETAILS.route)
+                                            itemClick = { personId ->
+                                                if (personId != null) {
+                                                    onPersonClick(personId)
                                                 }
+                                            }, viewAllItemClick = {
+                                                onViewAllCreditsClick(it)
                                             }
-                                        ) {
-                                            navHostController.apply {
-                                                currentBackStackEntry?.savedStateHandle?.set(
-                                                    "credit_response", it
-                                                )
-                                                navigate(NavigationRoute.CREDITS_VIEW_ALL.route)
-                                            }
-                                        }
+                                        )
                                         Spacer(modifier = Modifier.size(10.dp))
-                                        TvShowUiItem(similarMoviesResponse,
+                                        TvShowUiItem(similarTVShowResponse,
                                             "Similar Movies",
-                                            itemClick = { movieId ->
-                                                navHostController.apply {
-                                                    currentBackStackEntry?.savedStateHandle?.set(
-                                                        "movie_id", movieId
-                                                    )
-                                                    navigate(NavigationRoute.MOVIE_DETAILS.route)
+                                            itemClick = { tvShowId ->
+                                                tvShowId?.let {
+                                                    onTVClick(it)
                                                 }
                                             },
                                             viewAllItemClick = {
-                                                navHostController.apply {
-                                                    currentBackStackEntry?.savedStateHandle?.apply {
-                                                        set("title", "Upcoming Movies")
-                                                        set(
-                                                            "url", Constants.URL_UPCOMING_MOVIES
-                                                        )
-                                                    }
-                                                    navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                                                }
+                                                onViewAllMoviesClick(
+                                                    "Upcoming Movies",
+                                                    Constants.URL_UPCOMING_MOVIES
+                                                )
                                             })
                                         Spacer(modifier = Modifier.size(10.dp))
                                     }

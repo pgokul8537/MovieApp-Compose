@@ -37,10 +37,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.movieapp.DataHandler
-import com.example.movieapp.NavigationRoute
 import com.example.movieapp.ui.components.DetailScreenTopBar
 import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.ui.components.MoviesUiItem
@@ -52,8 +50,9 @@ import com.example.movieapp.viewmodel.MovieViewModel
 @Composable
 fun PersonDetailsScreen(
     viewModel: MovieViewModel = hiltViewModel(),
-    personId: Int?,
-    navHostController: NavHostController
+    personId: Int?, onMovieClick: (movieId: Int) -> Unit,
+    onViewAllMoviesClick: (title: String, url: String) -> Unit,
+    onBackClick: () -> Unit,
 ) {
     LaunchedEffect(key1 = "", block = {
         personId?.let { personId ->
@@ -201,22 +200,13 @@ fun PersonDetailsScreen(
 
                         Spacer(modifier = Modifier.size(10.dp))
                         MoviesUiItem(personMoviesResponse.value, "Movies", itemClick = { movieId ->
-                            navHostController.apply {
-                                currentBackStackEntry?.savedStateHandle?.set(
-                                    "movie_id", movieId
-                                )
-                                navigate(NavigationRoute.MOVIE_DETAILS.route)
+                            if (movieId != null) {
+                                onMovieClick(movieId)
                             }
                         }, viewAllItemClick = {
-                            navHostController.apply {
-                                currentBackStackEntry?.savedStateHandle?.apply {
-                                    set("title", "Upcoming Movies")
-                                    set(
-                                        "url", Constants.URL_UPCOMING_MOVIES
-                                    )
-                                }
-                                navigate(NavigationRoute.MOVIES_VIEW_ALL.route)
-                            }
+                            onViewAllMoviesClick(
+                                "Upcoming Movies", Constants.URL_UPCOMING_MOVIES
+                            )
                         }, toShowViewAll = false
                         )
                         Spacer(modifier = Modifier.size(10.dp))
@@ -232,7 +222,7 @@ fun PersonDetailsScreen(
 
             ) {
             DetailScreenTopBar(onBackClick = {
-                navHostController.popBackStack()
+                onBackClick.invoke()
             }, Color.Black, Color.LightGray.copy(0.5f))
         }
     }

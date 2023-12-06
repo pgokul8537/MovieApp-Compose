@@ -26,11 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.example.movieapp.NavigationRoute
 import com.example.movieapp.ui.components.AllMoviesListItem
 import com.example.movieapp.ui.components.MovieProgress
 import com.example.movieapp.utils.Constants
@@ -42,8 +40,9 @@ import com.example.movieapp.viewmodel.SearchType
 fun MovieViewAllScreen(
     viewModel: MovieViewModel = hiltViewModel(),
     title: String,
-    url: String,
-    navHostController: NavHostController
+    url: String, onBackClick: () -> Unit,
+    onMovieClick: (movieId: Int) -> Unit,
+    onSearchMoviesClick: (type: String, url: String) -> Unit,
 ) {
     val pagingItems = viewModel.getAllMovies(url).collectAsLazyPagingItems()
     Scaffold(topBar = {
@@ -56,19 +55,13 @@ fun MovieViewAllScreen(
                 )
             }, navigationIcon = {
                 IconButton(onClick = {
-                    navHostController.popBackStack()
+                    onBackClick.invoke()
                 }) {
                     Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
                 }
             }, actions = {
                 IconButton(onClick = {
-                    navHostController.apply {
-                        currentBackStackEntry?.savedStateHandle?.apply {
-                            set("url", Constants.URL_SEARCH_MOVIE)
-                            set("search_type", SearchType.MOVIE.value)
-                        }
-                        navigate(NavigationRoute.SEARCH.route)
-                    }
+                    onSearchMoviesClick.invoke(SearchType.MOVIE.value, Constants.URL_SEARCH_MOVIE)
                 }) {
                     Icon(imageVector = Icons.Filled.Search, contentDescription = "search")
                 }
@@ -115,12 +108,8 @@ fun MovieViewAllScreen(
                             val item = pagingItems[it]
                             item?.let { movieItem ->
                                 AllMoviesListItem(item = movieItem, onItemClick = { movieId ->
-                                    navHostController.apply {
-                                        currentBackStackEntry?.savedStateHandle?.set(
-                                            "movie_id",
-                                            movieId
-                                        )
-                                        navigate(NavigationRoute.MOVIE_DETAILS.route)
+                                    movieId?.let {
+                                        onMovieClick.invoke(it)
                                     }
                                 })
                             }

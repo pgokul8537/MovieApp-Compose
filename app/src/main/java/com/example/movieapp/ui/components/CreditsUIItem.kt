@@ -39,7 +39,6 @@ fun CreditsUIItem(
             .fillMaxSize()
             .padding(top = 15.dp)
     ) {
-
         when (creditResponse) {
             is DataHandler.Failure -> {
             }

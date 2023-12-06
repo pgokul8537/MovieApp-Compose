@@ -27,7 +27,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.movieapp.NavigationRoute
 import com.example.movieapp.network.model.CreditResponse
 import com.example.movieapp.ui.components.AllCreditsListItem
@@ -40,7 +39,9 @@ import kotlinx.coroutines.launch
 fun CreditsViewAllScreen(
     creditResponse: CreditResponse,
     pages: Array<CreditsPage> = CreditsPage.values(),
-    navHostController: NavHostController
+    onPersonClick: (personId: Int) -> Unit,
+    onBackClick: () -> Unit,
+    onSearchClick: (type: String, url: String) -> Unit,
 ) {
     val pagerState = rememberPagerState { pages.size }
     val coroutineScope = rememberCoroutineScope()
@@ -54,19 +55,14 @@ fun CreditsViewAllScreen(
             )
         }, navigationIcon = {
             IconButton(onClick = {
-                navHostController.popBackStack()
+                onBackClick.invoke()
             }) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
             }
         }, actions = {
             IconButton(onClick = {
-                navHostController.apply {
-                    currentBackStackEntry?.savedStateHandle?.apply {
-                        set("url", Constants.URL_SEARCH_PERSON)
-                        set("search_type", SearchType.PERSON.value)
-                    }
-                    navigate(NavigationRoute.SEARCH.route)
-                }
+                onSearchClick.invoke(SearchType.PERSON.value,Constants.URL_SEARCH_PERSON)
+
             }) {
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "search")
             }
@@ -102,11 +98,8 @@ fun CreditsViewAllScreen(
                         CreditsPage.CAST -> {
                             creditResponse.cast?.let { list ->
                                 AllCreditsListItem(list, onItemClick = { personId ->
-                                    navHostController.apply {
-                                        currentBackStackEntry?.savedStateHandle?.set(
-                                            "movie_id", personId
-                                        )
-                                        navigate(NavigationRoute.PERSON_DETAILS.route)
+                                    personId?.let {
+                                        onPersonClick(it)
                                     }
                                 })
                             }
@@ -115,11 +108,8 @@ fun CreditsViewAllScreen(
                         CreditsPage.CREW -> {
                             creditResponse.crew?.let { list ->
                                 AllCreditsListItem(list, onItemClick = { personId ->
-                                    navHostController.apply {
-                                        currentBackStackEntry?.savedStateHandle?.set(
-                                            "movie_id", personId
-                                        )
-                                        navigate(NavigationRoute.PERSON_DETAILS.route)
+                                    personId?.let {
+                                        onPersonClick(it)
                                     }
                                 })
                             }
