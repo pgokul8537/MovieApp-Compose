@@ -26,9 +26,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.movieapp.NavigationRoute
 import com.example.movieapp.utils.Constants
 import com.example.movieapp.viewmodel.MovieViewModel
+import com.example.movieapp.viewmodel.SearchType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +42,7 @@ fun ExploreScreen(
             )
         }, actions = {
             IconButton(onClick = {
-                onSearchClick.invoke(NavigationRoute.SEARCH.route, Constants.URL_SEARCH_MULTI)
+                onSearchClick.invoke(SearchType.MULTI.value, Constants.URL_SEARCH_MULTI)
             }) {
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "search")
             }
