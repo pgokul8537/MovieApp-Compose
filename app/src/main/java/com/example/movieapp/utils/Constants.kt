@@ -5,7 +5,7 @@ object Constants {
     const val imageUrl: String = "https://image.tmdb.org/t/p/w500"
     const val originalImageUrl: String = "https://image.tmdb.org/t/p/original"
     const val access_token: String =
-        "Bearer Token"
+        "Bearer Token "
 
     //    Movies
     const val URL_POPULAR_MOVIES: String = "movie/popular"
